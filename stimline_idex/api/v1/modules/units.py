@@ -29,7 +29,7 @@ class Units:
         if order_by is not None:
             params["$orderby"] = order_by
 
-        data = self._api.get(url="Wells", params=params)
+        data = self._api.get(url="Units", params=params)
 
         return [Unit.model_validate(row) for row in data.json()]
 
