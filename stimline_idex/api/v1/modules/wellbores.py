@@ -1,6 +1,8 @@
 from typing import Any, Optional, Union, overload
+
+from ....data_schemas import IdType
+from ....data_schemas.v1.assets import Well, Wellbore
 from ..api import IDEXApi
-from ....data_schemas.v1.assets import Wellbore
 
 
 class Wellbores:
@@ -8,7 +10,7 @@ class Wellbores:
         self._api = api
 
     @overload
-    def get(self, *, id: str) -> Wellbore: ...
+    def get(self, *, id: IdType) -> Wellbore: ...
 
     @overload
     def get(
@@ -22,27 +24,35 @@ class Wellbores:
     ) -> list[Wellbore]: ...
 
     @overload
-    def get(self, *, well_id: str) -> list[Wellbore]: ...
+    def get(self, *, well: Well) -> list[Wellbore]: ...
+    @overload
+    def get(self, *, well_id: IdType) -> list[Wellbore]: ...
 
     def get(
         self,
         *,
-        id: Optional[str] = None,
-        well_id: Optional[str] = None,
+        id: Optional[IdType] = None,
+        well: Optional[Well] = None,
+        well_id: Optional[IdType] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
     ) -> Union[Wellbore, list[Wellbore]]:
-        if isinstance(id, str):
+        if id is not None:
             # Get singular well
-            data = self._api.get(url=f"Wellbores/{id}")
+            data = self._api.get(url=f"Wellbores/{str(id)}")
             return Wellbore.model_validate(data.json())
 
-        if isinstance(well_id, str):
+        if well is not None:
+            # Get Wellbores for singular well
+            data = self._api.get(url=f"Wells/{str(well_id)}/Wellbores")
+
+        if well_id is not None:
             # Get Wellbores for singular well
             data = self._api.get(url=f"Wells/{well_id}/Wellbores")
+
         else:
             params: dict[str, Any] = {}
             if filter is not None:
