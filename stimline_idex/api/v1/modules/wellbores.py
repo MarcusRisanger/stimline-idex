@@ -40,6 +40,16 @@ class Wellbores:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
     ) -> Union[Wellbore, list[Wellbore]]:
+        ids_submitted = sum(1 for x in [id, well, well_id] if x is not None)
+        any_id_submitted = ids_submitted >= 1
+        one_id_submitted = ids_submitted == 1
+        any_param_submitted = sum(1 for x in [filter, select, top, skip, order_by] if x is not None) >= 1
+
+        if any_id_submitted and any_param_submitted:
+            raise ValueError("You can only submit either an ID or parameters, not both.")
+        elif any_id_submitted and not one_id_submitted:
+            raise ValueError("You can only submit one ID.")
+
         if id is not None:
             # Get singular well
             data = self._api.get(url=f"Wellbores/{str(id)}")
