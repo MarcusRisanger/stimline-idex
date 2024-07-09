@@ -1,7 +1,8 @@
-from pydantic import Field
-from ..base import IDEX, IDEXAudit, Approval, IDEXAuditLite, TimeDuration
-from uuid import UUID
 from typing import Optional
+
+from pydantic import Field
+
+from ..base import IDEX, Approval, IDEXAudit, IDEXAuditLite, TimeDuration
 
 
 class JobPlan(IDEX):
@@ -11,12 +12,12 @@ class JobPlan(IDEX):
     Endpoint allows for selecting return columns, need default Nones.
     """
 
-    id: UUID
+    id: str
     name: Optional[str] = Field(default=None)
     well_name: Optional[str] = Field(default=None)
-    well_id: Optional[UUID] = Field(default=None)
+    well_id: Optional[str] = Field(default=None)
     wellbore_name: Optional[str] = Field(default=None)
-    wellbore_id: Optional[UUID] = Field(default=None)
+    wellbore_id: Optional[str] = Field(default=None)
     field_name: Optional[str] = Field(default=None)
     phase: Optional[str] = Field(default=None)
     service_type: Optional[str] = Field(default=None)
@@ -30,9 +31,9 @@ class JobPlanRequest(IDEX):
     """For getting plans that match filter. All properties are optional."""
 
     well_name: Optional[str] = Field(default=None)
-    well_id: Optional[UUID] = Field(default=None)
+    well_id: Optional[str] = Field(default=None)
     wellbore_name: Optional[str] = Field(default=None)
-    wellbore_id: Optional[UUID] = Field(default=None)
+    wellbore_id: Optional[str] = Field(default=None)
     field_name: Optional[str] = Field(default=None)
     creation_date: Optional[str] = Field(default=None)
     phase: Optional[str] = Field(default=None)
@@ -40,7 +41,7 @@ class JobPlanRequest(IDEX):
 
 
 class _IDEXActivity:
-    id: UUID
+    id: str
     name: Optional[str]
     type: Optional[str]
     order: int
@@ -64,7 +65,7 @@ class Document(IDEXAuditLite):
     Endpoint allows for selecting return columns, need default Nones.
     """
 
-    job_plan_id: Optional[UUID]
+    job_plan_id: Optional[str]
     job_plan_name: Optional[str] = Field(default=None)
     file_name: Optional[str] = Field(default=None)
     file_type: Optional[str] = Field(default=None)
@@ -73,7 +74,7 @@ class Document(IDEXAuditLite):
     service_type: Optional[str] = Field(default=None)
     job_type: Optional[str] = Field(default=None)
     well_name: Optional[str] = Field(default=None)
-    well_id: Optional[UUID] = Field(default=None)
+    well_id: Optional[str] = Field(default=None)
     wellbore_name: Optional[str] = Field(default=None)
-    wellbore_id: Optional[UUID] = Field(default=None)
+    wellbore_id: Optional[str] = Field(default=None)
     field_name: Optional[str] = Field(default=None)

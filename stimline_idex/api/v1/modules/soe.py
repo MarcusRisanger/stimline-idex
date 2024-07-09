@@ -1,6 +1,5 @@
 from typing import Optional, overload
 
-from ....data_schemas import str
 from ....data_schemas.v1.assets import Wellbore
 from ....data_schemas.v1.events import (
     SoeActivity,
@@ -16,7 +15,6 @@ class Soe:
         self._api = api
 
     def _get_jobs(self, wellbore_id: str) -> list[SoeJob]:
-        wellbore_id = str(wellbore_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs")
         if data.status_code == 204:
             return []
@@ -24,7 +22,6 @@ class Soe:
         return [SoeJob.model_validate(row) for row in data.json()]
 
     def _get_tasks(self, wellbore_id: str, job_id: str) -> list[SoeTask]:
-        wellbore_id, job_id = str(wellbore_id), str(job_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs/{job_id}/Tasks")
         if data.status_code == 204:
             return []  # Empty response
@@ -35,7 +32,6 @@ class Soe:
         return tasks
 
     def _get_chemical_measurements(self, wellbore_id: str, job_id: str) -> list[SoeChemicalMeasurement]:
-        wellbore_id, job_id = str(wellbore_id), str(job_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs/{job_id}/ChemicalMeasurements")
         if data.status_code == 204:
             return []
@@ -46,7 +42,6 @@ class Soe:
         return measurements
 
     def _get_activities(self, wellbore_id: str, job_id: str, task_id: str) -> list[SoeActivity]:
-        wellbore_id, job_id, task_id = str(wellbore_id), str(job_id), str(task_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs/{job_id}/Tasks/{task_id}/Activities")
         if data.status_code == 204:
             return []

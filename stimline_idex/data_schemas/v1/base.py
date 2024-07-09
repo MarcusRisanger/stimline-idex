@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from uuid import UUID
-from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 def to_camel(string: str) -> str:
@@ -21,7 +21,7 @@ class IDEX(BaseModel):
 class IDEXAuditLite(IDEX):
     """For subclasses with API audit fields."""
 
-    id: UUID
+    id: str
     created_date: Optional[datetime] = Field(default=None)
     modified_date: Optional[datetime] = Field(default=None)
 

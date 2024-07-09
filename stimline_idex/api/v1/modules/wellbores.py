@@ -1,6 +1,5 @@
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas import str
 from ....data_schemas.v1.assets import Well, Wellbore
 from ..api import IDEXApi
 

@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from pydantic import Field
 
@@ -23,7 +22,7 @@ class SoeSensorValues(IDEX):
 class SoeActivity(IDEXAuditLite):
     """Describes an Activity in a SoeTask."""
 
-    task_id: UUID
+    task_id: str
     name: Optional[str]
     type: Optional[str]
     start: Optional[datetime]
@@ -36,7 +35,7 @@ class SoeActivity(IDEXAuditLite):
 class SoeTask(IDEXAuditLite):
     """Describes a SoeTask for a given Job."""
 
-    job_id: UUID
+    job_id: str
     name: Optional[str]
     conveyance_type: Optional[str]
     activities_count: int
@@ -54,8 +53,8 @@ class SoeTask(IDEXAuditLite):
 class SoeChemicalMeasurement(IDEX):
     """Describes a chemical measurement for an Activity."""
 
-    id: UUID
-    job_id: UUID
+    id: str
+    job_id: str
     date: datetime
     type: Optional[str]
     value: float
@@ -67,7 +66,7 @@ class SoeChemicalMeasurement(IDEX):
 class SoeJob(IDEXAuditLite):
     """Describes a Sequence of Events (Soe) Job."""
 
-    wellbore_id: UUID
+    wellbore_id: str
     name: Optional[str]
     start: Optional[datetime]
     end: Optional[datetime]

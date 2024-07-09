@@ -1,16 +1,15 @@
 from datetime import datetime
-from uuid import UUID
+from typing import Optional
 
 from pydantic import Field
 
-from ..base import DoubleNullableUomValue, IDEXAuditLite, IDEXAudit, IDEX
-from typing import Optional
+from ..base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite
 
 
 class Maintenance(IDEXAuditLite):
     """Describes a maintenance event."""
 
-    location_id: Optional[UUID]
+    location_id: Optional[str]
     type: Optional[str]
     description: Optional[str]
     repair_notes: Optional[str]
@@ -30,7 +29,7 @@ class Run(IDEXAudit):
     job_type: Optional[str]
     unit_id: Optional[str]
     hidden: bool
-    wellbore_id: UUID
+    wellbore_id: str
     log_ids: list[str]
     work_order_number: Optional[str]
 
@@ -38,7 +37,7 @@ class Run(IDEXAudit):
 class SurveyStation(IDEX):
     """Describes a single survey station."""
 
-    id: UUID
+    id: str
     md: float
     tvd: Optional[float]
     incl: float
@@ -52,9 +51,9 @@ class SurveyStation(IDEX):
 class Survey(IDEX):
     """Describes a wellbore survey."""
 
-    id: UUID
+    id: str
     name: Optional[str]
-    wellbore_id: UUID
+    wellbore_id: str
     md_uom: Optional[str]
     tvd_uom: Optional[str]
     inc_uom: Optional[str]
@@ -71,13 +70,13 @@ class JobHistory(IDEXAuditLite):
     """Describes a historical job event."""
 
     coiled_tubing_string: Optional[str]
-    coiled_tubing_string_id: Optional[UUID]
+    coiled_tubing_string_id: Optional[str]
     reel_name: Optional[str]
-    reel_id: Optional[UUID]
+    reel_id: Optional[str]
     customer: Optional[str]
-    customer_id: Optional[UUID]
+    customer_id: Optional[str]
     well_name: Optional[str]
-    well_id: Optional[UUID]
+    well_id: Optional[str]
     well_time_zone: str
     added_dhrm: DoubleNullableUomValue = Field(alias="addedDHRM")
     weight_pull_avg: DoubleNullableUomValue
@@ -100,11 +99,11 @@ class ScheduledJob(IDEXAuditLite):
     name: Optional[str]
     job_plan: Optional[str]
     customer: Optional[str]
-    customer_id: Optional[UUID]
+    customer_id: Optional[str]
     well_name: Optional[str]
-    well_id: Optional[UUID]
+    well_id: Optional[str]
     wellbore_name: Optional[str]
-    wellbore_id: Optional[UUID]
+    wellbore_id: Optional[str]
     well_time_zone: Optional[str]
     start_time: Optional[datetime]
     end_time: Optional[datetime]

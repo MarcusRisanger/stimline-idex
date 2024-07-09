@@ -1,7 +1,5 @@
 from typing import Any, Optional, Union, overload
 
-from stimline_idex.data_schemas import str
-
 from ....data_schemas.v1.assets import Well
 from ..api import IDEXApi
 

@@ -1,5 +1,4 @@
-import logging
-from typing import Any, Optional, Union, overload
+from typing import Any, Optional, overload
 
 from ....data_schemas.v1.assets import Wellbore
 from ....data_schemas.v1.events import Survey, SurveyStation
@@ -63,15 +62,12 @@ class Surveys:
             A list of Wellbore objects.
 
         """
-        if wellbore is not None or wellbore_id is not None:
+        if wellbore is not None:
             # Get for singular wellbore
-            wellbore_id = wellbore_id or wellbore.__getattribute__("id")
-            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore.id}")
             data = self._api.get(url=f"Wellbores/{wellbore.id}/Surveys")
 
         elif wellbore_id is not None:
             # Get for singular wellbore
-            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore_id}")
             data = self._api.get(url=f"Wellbores/{wellbore_id}/Surveys")
 
         else:
@@ -96,7 +92,6 @@ class Surveys:
         return [Survey.model_validate(row) for row in data.json()]
 
     def _get_stations(self, survey_id: str) -> list[SurveyStation]:
-        survey_id = str(survey_id)
         data = self._api.get(url=f"Surveys/{survey_id}/Stations")
         if data.status_code == 204:
             return []
@@ -110,15 +105,15 @@ class Surveys:
     def get_stations(
         self,
         *,
-        survey: Optional[Union[Survey, list[Survey]]] = None,
+        survey: Optional[Survey] = None,
         survey_id: Optional[str] = None,
     ) -> list[SurveyStation]:
         if all(v is None for v in [survey, survey_id]):
             raise ValueError("Must provide either a Survey object or a survey_id.")
 
-        if isinstance(survey, Survey):
+        if survey is not None:
             return self._get_stations(survey.id)
-        elif isinstance(survey_id, str):
+        elif survey_id is not None:
             return self._get_stations(survey_id)
         else:
             raise ValueError("Invalid input. Must provide either a Survey object or a survey_id.")

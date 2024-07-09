@@ -1,8 +1,6 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from stimline_idex.data_schemas import str
-
 from ....data_schemas.v1.assets import Customer
 from ..api import IDEXApi
 

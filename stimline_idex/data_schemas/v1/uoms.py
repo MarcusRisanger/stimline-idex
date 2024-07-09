@@ -1,5 +1,6 @@
-from .base import IDEX
 from pydantic import Field
+
+from .base import IDEX
 
 
 class UomInfo(IDEX):

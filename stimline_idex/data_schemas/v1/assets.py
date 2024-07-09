@@ -1,16 +1,16 @@
 """Contains Schemas for Physical assets."""
 
 from datetime import datetime
+from typing import Optional
 
 from pydantic import Field as PField
-from .base import IDEXAuditLite, IDEX, IDEXAudit, DoubleNullableUomValue
-from uuid import UUID
-from typing import Optional
+
+from .base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite
 
 
 class Wellbore(IDEXAudit):
     name: str
-    well_id: Optional[UUID]
+    well_id: Optional[str]
     item_state: Optional[str]
 
 
@@ -27,14 +27,14 @@ class Well(IDEXAudit):
     time_zone: Optional[str] = PField(default=None)
     well_number: Optional[str] = PField(default=None)
     reference_point: Optional[str] = PField(default=None)
-    operator_id: Optional[UUID] = PField(default=None)
-    field_id: Optional[UUID] = PField(default=None)
-    installation_id: Optional[UUID] = PField(default=None)
+    operator_id: Optional[str] = PField(default=None)
+    field_id: Optional[str] = PField(default=None)
+    installation_id: Optional[str] = PField(default=None)
     reference_point_elevation: Optional[DoubleNullableUomValue] = PField(default=None)
 
 
 class WellboreLiveStatus(IDEXAudit):
-    wellbore_id: UUID
+    wellbore_id: str
     is_live: bool
     is_live_last_changed: datetime
     is_depth_live: bool
@@ -127,7 +127,7 @@ class Fish(IDEX):
     type: Optional[str]
     other_text: Optional[str]
     cable_type: Optional[str]
-    bha_id: Optional[UUID]
+    bha_id: Optional[str]
     md_top: DoubleNullableUomValue
     outer_diameter: DoubleNullableUomValue
     inner_diameter: DoubleNullableUomValue = PField(alias="innerDiameters")
