@@ -1,8 +1,10 @@
 from typing import Optional
+
 from requests import Session
-from .auth import IDEXAuth
+
 from .api import IDEXApi
-from .modules import Wells, Wellbores, Soe, Surveys
+from .auth import IDEXAuth
+from .modules import Soe, Surveys, Units, Wellbores, Wells
 
 
 class IDEXClient:
@@ -11,7 +13,8 @@ class IDEXClient:
             session = Session()
 
         self._api = IDEXApi(auth=auth, session=session)
-        self.wells = Wells(api=self._api)
-        self.wellbores = Wellbores(api=self._api)
         self.soe = Soe(api=self._api)
         self.surveys = Surveys(api=self._api)
+        self.units = Units(api=self._api)
+        self.wells = Wells(api=self._api)
+        self.wellbores = Wellbores(api=self._api)
