@@ -31,6 +31,9 @@ class Units:
 
         data = self._api.get(url="Units", params=params)
 
+        if data.status_code == 204:
+            return []
+
         return [Unit.model_validate(row) for row in data.json()]
 
     def _check_select(self, select: list[str]) -> list[str]:
