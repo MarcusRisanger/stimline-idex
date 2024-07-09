@@ -1,6 +1,7 @@
+import logging
 from typing import Any, Optional, Union, overload
 
-from stimline_idex.data_schemas import IdType
+from stimline_idex.data_schemas import str
 
 from ....data_schemas.v1.assets import Field
 from ..api import IDEXApi
@@ -11,7 +12,7 @@ class Fields:
         self._api = api
 
     @overload
-    def get(self, *, id: IdType) -> Field: ...
+    def get(self, *, id: str) -> Field: ...
     @overload
     def get(
         self,
@@ -25,7 +26,7 @@ class Fields:
 
     def get(
         self,
-        id: Optional[IdType] = None,
+        id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,
@@ -56,11 +57,9 @@ class Fields:
             The Field object(s).
 
         """
-        if id is not None and any(v is not None for v in [filter, select, top, skip, order_by]):
-            raise ValueError("You can only submit either an ID or parameters, not both.")
-
         if id is not None:
             # Get singular Customer
+            logging.debug(f"Getting Field with ID: {id}")
             data = self._api.get(url=f"Fields/{id}")
             return Field.model_validate(data.json())
 

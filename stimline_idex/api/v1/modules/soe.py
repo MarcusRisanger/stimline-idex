@@ -1,6 +1,6 @@
 from typing import Optional, overload
 
-from ....data_schemas import IdType
+from ....data_schemas import str
 from ....data_schemas.v1.assets import Wellbore
 from ....data_schemas.v1.events import (
     SoeActivity,
@@ -15,7 +15,7 @@ class Soe:
     def __init__(self, api: IDEXApi) -> None:
         self._api = api
 
-    def _get_jobs(self, wellbore_id: IdType) -> list[SoeJob]:
+    def _get_jobs(self, wellbore_id: str) -> list[SoeJob]:
         wellbore_id = str(wellbore_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs")
         if data.status_code == 204:
@@ -23,7 +23,7 @@ class Soe:
 
         return [SoeJob.model_validate(row) for row in data.json()]
 
-    def _get_tasks(self, wellbore_id: IdType, job_id: IdType) -> list[SoeTask]:
+    def _get_tasks(self, wellbore_id: str, job_id: str) -> list[SoeTask]:
         wellbore_id, job_id = str(wellbore_id), str(job_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs/{job_id}/Tasks")
         if data.status_code == 204:
@@ -34,7 +34,7 @@ class Soe:
             task.wellbore_id = wellbore_id
         return tasks
 
-    def _get_chemical_measurements(self, wellbore_id: IdType, job_id: IdType) -> list[SoeChemicalMeasurement]:
+    def _get_chemical_measurements(self, wellbore_id: str, job_id: str) -> list[SoeChemicalMeasurement]:
         wellbore_id, job_id = str(wellbore_id), str(job_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs/{job_id}/ChemicalMeasurements")
         if data.status_code == 204:
@@ -45,7 +45,7 @@ class Soe:
             measurement.wellbore_id = wellbore_id
         return measurements
 
-    def _get_activities(self, wellbore_id: IdType, job_id: IdType, task_id: IdType) -> list[SoeActivity]:
+    def _get_activities(self, wellbore_id: str, job_id: str, task_id: str) -> list[SoeActivity]:
         wellbore_id, job_id, task_id = str(wellbore_id), str(job_id), str(task_id)
         data = self._api.get(url=f"SequenceOfEvents/{wellbore_id}/Jobs/{job_id}/Tasks/{task_id}/Activities")
         if data.status_code == 204:
@@ -56,9 +56,9 @@ class Soe:
     @overload
     def get_jobs(self, *, wellbore: Wellbore) -> list[SoeJob]: ...
     @overload
-    def get_jobs(self, *, wellbore_id: IdType) -> list[SoeJob]: ...
+    def get_jobs(self, *, wellbore_id: str) -> list[SoeJob]: ...
 
-    def get_jobs(self, *, wellbore: Optional[Wellbore] = None, wellbore_id: Optional[IdType] = None) -> list[SoeJob]:
+    def get_jobs(self, *, wellbore: Optional[Wellbore] = None, wellbore_id: Optional[str] = None) -> list[SoeJob]:
         """
         Get all SoE Jobs for a given Wellbore.
 
@@ -87,10 +87,10 @@ class Soe:
     @overload
     def get_tasks(self, *, job: SoeJob) -> list[SoeTask]: ...
     @overload
-    def get_tasks(self, *, wellbore_id: IdType, job_id: IdType) -> list[SoeTask]: ...
+    def get_tasks(self, *, wellbore_id: str, job_id: str) -> list[SoeTask]: ...
 
     def get_tasks(
-        self, *, job: Optional[SoeJob] = None, wellbore_id: Optional[IdType] = None, job_id: Optional[IdType] = None
+        self, *, job: Optional[SoeJob] = None, wellbore_id: Optional[str] = None, job_id: Optional[str] = None
     ) -> list[SoeTask]:
         """
         Get all Tasks for a given SoE Job.
@@ -124,10 +124,10 @@ class Soe:
     @overload
     def get_chemical_measurements(self, *, job: SoeJob) -> list[SoeChemicalMeasurement]: ...
     @overload
-    def get_chemical_measurements(self, *, wellbore_id: IdType, job_id: IdType) -> list[SoeChemicalMeasurement]: ...
+    def get_chemical_measurements(self, *, wellbore_id: str, job_id: str) -> list[SoeChemicalMeasurement]: ...
 
     def get_chemical_measurements(
-        self, *, job: Optional[SoeJob] = None, wellbore_id: Optional[IdType] = None, job_id: Optional[IdType] = None
+        self, *, job: Optional[SoeJob] = None, wellbore_id: Optional[str] = None, job_id: Optional[str] = None
     ) -> list[SoeChemicalMeasurement]:
         """
         Get all Chemical Measurements for a given SoE Job.
@@ -161,15 +161,15 @@ class Soe:
     @overload
     def get_activities(self, *, task: SoeTask) -> list[SoeActivity]: ...
     @overload
-    def get_activities(self, *, wellbore_id: IdType, job_id: IdType, task_id: IdType) -> list[SoeActivity]: ...
+    def get_activities(self, *, wellbore_id: str, job_id: str, task_id: str) -> list[SoeActivity]: ...
 
     def get_activities(
         self,
         *,
         task: Optional[SoeTask] = None,
-        wellbore_id: Optional[IdType] = None,
-        job_id: Optional[IdType] = None,
-        task_id: Optional[IdType] = None,
+        wellbore_id: Optional[str] = None,
+        job_id: Optional[str] = None,
+        task_id: Optional[str] = None,
     ) -> list[SoeActivity]:
         """
         Get all Activities for a given SoE Job Task.

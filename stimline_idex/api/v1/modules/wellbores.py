@@ -1,6 +1,6 @@
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas import IdType
+from ....data_schemas import str
 from ....data_schemas.v1.assets import Well, Wellbore
 from ..api import IDEXApi
 
@@ -10,7 +10,7 @@ class Wellbores:
         self._api = api
 
     @overload
-    def get(self, *, id: IdType) -> Wellbore: ...
+    def get(self, *, id: str) -> Wellbore: ...
 
     @overload
     def get(
@@ -26,14 +26,14 @@ class Wellbores:
     @overload
     def get(self, *, well: Well) -> list[Wellbore]: ...
     @overload
-    def get(self, *, well_id: IdType) -> list[Wellbore]: ...
+    def get(self, *, well_id: str) -> list[Wellbore]: ...
 
     def get(
         self,
         *,
-        id: Optional[IdType] = None,
+        id: Optional[str] = None,
         well: Optional[Well] = None,
-        well_id: Optional[IdType] = None,
+        well_id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,

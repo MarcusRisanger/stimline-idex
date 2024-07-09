@@ -1,6 +1,6 @@
+import logging
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas import IdType
 from ....data_schemas.v1.assets import Wellbore
 from ....data_schemas.v1.events import Survey, SurveyStation
 from ..api import IDEXApi
@@ -30,7 +30,7 @@ class Surveys:
         self,
         *,
         wellbore: Optional[Wellbore] = None,
-        wellbore_id: Optional[IdType] = None,
+        wellbore_id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,
@@ -63,15 +63,16 @@ class Surveys:
             A list of Wellbore objects.
 
         """
-        if wellbore is not None:
+        if wellbore is not None or wellbore_id is not None:
             # Get for singular wellbore
-            wb_id = str(wellbore.id)
-            data = self._api.get(url=f"Wellbores/{wb_id}/Surveys")
+            wellbore_id = wellbore_id or wellbore.__getattribute__("id")
+            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore.id}")
+            data = self._api.get(url=f"Wellbores/{wellbore.id}/Surveys")
 
         elif wellbore_id is not None:
             # Get for singular wellbore
-            wb_id = str(wellbore_id)
-            data = self._api.get(url=f"Wellbores/{wb_id}/Surveys")
+            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore_id}")
+            data = self._api.get(url=f"Wellbores/{wellbore_id}/Surveys")
 
         else:
             # Get all surveys matching filters
@@ -94,7 +95,7 @@ class Surveys:
 
         return [Survey.model_validate(row) for row in data.json()]
 
-    def _get_stations(self, survey_id: IdType) -> list[SurveyStation]:
+    def _get_stations(self, survey_id: str) -> list[SurveyStation]:
         survey_id = str(survey_id)
         data = self._api.get(url=f"Surveys/{survey_id}/Stations")
         if data.status_code == 204:
