@@ -39,6 +39,34 @@ class Wellbores:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
     ) -> Union[Wellbore, list[Wellbore]]:
+        """
+        Get `Wellbore` object(s).
+
+        Parameters
+        ----------
+        id : Optional[str]
+            Well to retrieve.
+        well : Optional[Well]
+            Well object to get Wellbores for.
+        well_id : Optional[str]
+            Well ID to get Wellbores for.
+        filter : Optional[str]
+            OData filter string.
+        select : list[str] | None
+            Provide a list of columns to retrieve from output.
+        top : Optional[int]
+            Limit the number of results returned.
+        skip : Optional[int]
+            Skip the first N results.
+        order_by : Optional[str]
+            Order the results by columns.
+
+        Returns
+        -------
+        Union[Wellbore, list[Wellbore]]
+            The `Wellbore` object(s).
+
+        """
         ids_submitted = sum(1 for x in [id, well, well_id] if x is not None)
         any_id_submitted = ids_submitted >= 1
         one_id_submitted = ids_submitted == 1

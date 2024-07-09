@@ -55,19 +55,19 @@ class Soe:
 
     def get_jobs(self, *, wellbore: Optional[Wellbore] = None, wellbore_id: Optional[str] = None) -> list[SoeJob]:
         """
-        Get all SoE Jobs for a given Wellbore.
+        Get `SoeJob` objects for a given Wellbore.
 
         Parameters
         ----------
-        wellbore : Wellbore
+        wellbore : Optional[Wellbore]
             The Wellbore object for which to retrieve all Jobs.
-        wellbore_id : IdType
-            The UUID of the Wellbore for which to retrieve all Jobs.
+        wellbore_id : Optional[str]
+            The ID of the Wellbore for which to retrieve all Jobs.
 
         Returns
         -------
         list[SoeJob]
-            A list of SoeJob objects for the Wellbore.
+            The `SoeJob` objects for the Wellbore.
 
         """
         if all(v is None for v in [wellbore, wellbore_id]):
@@ -88,23 +88,23 @@ class Soe:
         self, *, job: Optional[SoeJob] = None, wellbore_id: Optional[str] = None, job_id: Optional[str] = None
     ) -> list[SoeTask]:
         """
-        Get all Tasks for a given SoE Job.
+        Get `SoeTask` objects for a given SoE Job.
 
         Use either a SoeJob object or provide the wellbore_id and job_id explicitly.
 
         Parameters
         ----------
-        job : SoeJob
+        job : Optional[SoeJob]
             The SoeJob object for which to retrieve all Tasks.
-        wellbore_id : IdType
-            The UUID of the Wellbore for which to retrieve all Tasks.
-        job_id : IdType
-            The UUID of the Job for which to retrieve all Tasks.
+        wellbore_id : Optional[str]
+            The ID of the Wellbore for which to retrieve all Tasks.
+        job_id : Optional[str]
+            The ID of the Job for which to retrieve all Tasks.
 
         Returns
         -------
         list[SoeTask]
-            A list of SoeTask objects for the Job.
+            The `SoeTask` objects for the Job.
 
         """
         if all(v is not None for v in [job, wellbore_id, job_id]):
@@ -125,23 +125,23 @@ class Soe:
         self, *, job: Optional[SoeJob] = None, wellbore_id: Optional[str] = None, job_id: Optional[str] = None
     ) -> list[SoeChemicalMeasurement]:
         """
-        Get all Chemical Measurements for a given SoE Job.
+        Get `SoeChemicalMeasurement` objects for a given SoE Job.
 
-        Use either a SoeJob object or provide the wellbore_id and job_id explicitly.
+        Use either a `SoeJob` object or provide the wellbore_id and job_id explicitly.
 
         Parameters
         ----------
-        job : SoeJob
+        job : Optional[SoeJob]
             The SoeJob object for which to retrieve all Chemical Measurements.
-        wellbore_id : IdType
-            The UUID of the Wellbore for which to retrieve all Chemical Measurements.
-        job_id : IdType
-            The UUID of the Job for which to retrieve all Chemical Measurements.
+        wellbore_id : Optional[str]
+            The ID of the Wellbore for which to retrieve all Chemical Measurements.
+        job_id : Optional[str]
+            The ID of the Job for which to retrieve all Chemical Measurements.
 
         Returns
         -------
         list[SoeChemicalMeasurement]
-            A list of `SoeChemicalMeasurement` objects for the Job.
+            The `SoeChemicalMeasurement` objects for the Job.
 
         """
         if job is not None and any(v is not None for v in [wellbore_id, job_id]):
@@ -167,25 +167,25 @@ class Soe:
         task_id: Optional[str] = None,
     ) -> list[SoeActivity]:
         """
-        Get all Activities for a given SoE Job Task.
+        Get `SoeActivity` objects for a given SoE Job Task.
 
         Use either a SoeTask object or provide the wellbore_id, job_id and task_id explicitly.
 
         Parameters
         ----------
-        job : SoeJob
+        job : Optional[SoeJob]
             The SoeJob object for which to retrieve all Chemical Measurements.
-        wellbore_id : IdType
-            The UUID of the Wellbore for which to retrieve all Chemical Measurements.
-        job_id : IdType
-            The UUID of the Job for which to retrieve all Chemical Measurements.
-        task_id : IdType
-            The UUID of the Task for which to retrieve all Activities.
+        wellbore_id : Optional[str]
+            The ID of the Wellbore for which to retrieve all Chemical Measurements.
+        job_id : Optional[str]
+            The ID of the Job for which to retrieve all Chemical Measurements.
+        task_id : Optional[str]
+            The ID of the Task for which to retrieve all Activities.
 
         Returns
         -------
         list[SoeActivity]
-            A list of `SoeActivity` objects for the Task.
+            The `SoeActivity` objects for the Task.
 
         """
         if task is not None and any(v is not None for v in [task, wellbore_id, job_id, task_id]):

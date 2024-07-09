@@ -32,6 +32,30 @@ class Wells:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
     ) -> Union[Well, list[Well]]:
+        """
+        Get `Well` object(s).
+
+        Parameters
+        ----------
+        id : Optional[str]
+            Well to retrieve.
+        filter : Optional[str]
+            OData filter string.
+        select : list[str] | None
+            Provide a list of columns to retrieve from output.
+        top : Optional[int]
+            Limit the number of results returned.
+        skip : Optional[int]
+            Skip the first N results.
+        order_by : Optional[str]
+            Order the results by columns.
+
+        Returns
+        -------
+        Union[Well, list[Well]]
+            The `Well` object(s).
+
+        """
         if id is not None:
             # Get singular well
             data = self._api.get(url=f"Wells/{id}")

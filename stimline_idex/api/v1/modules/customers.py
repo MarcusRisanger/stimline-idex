@@ -32,11 +32,11 @@ class Customers:
         order_by: Optional[str] = None,
     ) -> Union[Customer, list[Customer]]:
         """
-        Get Customer object(s).
+        Get `Customer` object(s).
 
         Parameters
         ----------
-        id : Optional[Union[UUID, str]]
+        id : Optional[str]
             Customer to retrieve.
         filter : Optional[str]
             OData filter string.
@@ -52,7 +52,7 @@ class Customers:
         Returns
         -------
         Union[Customer, list[Customer]]
-            The Customer object(s).
+            The `Customer` object(s).
 
         """
         if id is not None:

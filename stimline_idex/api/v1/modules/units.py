@@ -16,6 +16,28 @@ class Units:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
     ) -> list[Unit]:
+        """
+        Get `Unit` objects.
+
+        Parameters
+        ----------
+        filter : Optional[str]
+            OData filter string.
+        select : list[str] | None
+            Provide a list of columns to retrieve from output.
+        top : Optional[int]
+            Limit the number of results returned.
+        skip : Optional[int]
+            Skip the first N results.
+        order_by : Optional[str]
+            Order the results by columns.
+
+        Returns
+        -------
+        list[Unit]
+            The `Unit` objects.
+
+        """
         params: dict[str, Any] = {}
         if filter is not None:
             params["$filter"] = filter

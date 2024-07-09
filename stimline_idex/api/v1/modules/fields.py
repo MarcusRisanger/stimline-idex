@@ -32,11 +32,11 @@ class Fields:
         order_by: Optional[str] = None,
     ) -> Union[Field, list[Field]]:
         """
-        Get Field object(s).
+        Get `Field` object(s).
 
         Parameters
         ----------
-        id : Optional[Union[UUID, str]]
+        id : Optional[str]
             Field to retrieve.
         filter : Optional[str]
             OData filter string.
@@ -52,7 +52,7 @@ class Fields:
         Returns
         -------
         Union[Field, list[Field]]
-            The Field object(s).
+            The `Field` object(s).
 
         """
         if id is not None:

@@ -37,7 +37,7 @@ class Surveys:
         order_by: Optional[str] = None,
     ) -> list[Survey]:
         """
-        Get a list of Survey objects.
+        Get `Survey` objects.
 
         Parameters
         ----------
@@ -59,7 +59,7 @@ class Surveys:
         Returns
         -------
         list[Survey]
-            A list of Wellbore objects.
+            The `Survey` objects.
 
         """
         if wellbore is not None:
