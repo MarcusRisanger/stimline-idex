@@ -79,10 +79,10 @@ class Soe:
             raise ValueError("Provide only one of: wellbore, wellbore_id.")
         if wellbore is not None:
             return self._get_jobs(wellbore_id=wellbore.id)
-        elif wellbore_id is not None:
+        if wellbore_id is not None:
             return self._get_jobs(wellbore_id=wellbore_id)  # type: ignore
-        else:
-            raise ValueError("Either wellbore or wellbore_id must be provided.")
+
+        raise ValueError("Either wellbore or wellbore_id must be provided.")
 
     @overload
     def get_tasks(self, *, job: SoeJob) -> list[SoeTask]: ...
@@ -116,10 +116,10 @@ class Soe:
             raise ValueError("Either job or wellbore_id and job_id must be provided, not both.")
         if job is not None:
             return self._get_tasks(wellbore_id=job.wellbore_id, job_id=job.id)
-        elif wellbore_id is not None and job_id is not None:
+        if wellbore_id is not None and job_id is not None:
             return self._get_tasks(wellbore_id=wellbore_id, job_id=job_id)
-        else:
-            raise ValueError("Either job or wellbore_id and job_id must be provided.")
+
+        raise ValueError("Either job or wellbore_id and job_id must be provided.")
 
     @overload
     def get_chemical_measurements(self, *, job: SoeJob) -> list[SoeChemicalMeasurement]: ...
@@ -153,10 +153,10 @@ class Soe:
             raise ValueError("Either job or wellbore_id and job_id must be provided, not both.")
         if job is not None:
             return self._get_chemical_measurements(wellbore_id=job.wellbore_id, job_id=job.id)
-        elif all(v is not None for v in [wellbore_id, job_id]):
+        if all(v is not None for v in [wellbore_id, job_id]):
             return self._get_chemical_measurements(wellbore_id=wellbore_id, job_id=job_id)  # type: ignore
-        else:
-            raise ValueError("Either job or wellbore_id and job_id must be provided.")
+
+        raise ValueError("Either job or wellbore_id and job_id must be provided.")
 
     @overload
     def get_activities(self, *, task: SoeTask) -> list[SoeActivity]: ...
@@ -197,7 +197,7 @@ class Soe:
             raise ValueError("Provide either a `SoeTask` or a wellbore_id, job_id, and task_id combination.")
         if task is not None:
             return self._get_activities(wellbore_id=task.wellbore_id, job_id=task.job_id, task_id=task.id)  # type: ignore
-        elif all(v is not None for v in [wellbore_id, job_id, task_id]):
+        if all(v is not None for v in [wellbore_id, job_id, task_id]):
             return self._get_activities(wellbore_id=wellbore_id, job_id=job_id, task_id=task_id)  # type: ignore
-        else:
-            raise ValueError("Provide either a `SoeTask` or a wellbore_id, job_id, and task_id combination.")
+
+        raise ValueError("Provide either a `SoeTask` or a wellbore_id, job_id, and task_id combination.")
