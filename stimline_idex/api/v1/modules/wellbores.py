@@ -51,12 +51,12 @@ class Wellbores:
 
         if id is not None:
             # Get singular well
-            data = self._api.get(url=f"Wellbores/{str(id)}")
+            data = self._api.get(url=f"Wellbores/{id}")
             return Wellbore.model_validate(data.json())
 
         if well is not None:
             # Get Wellbores for singular well
-            data = self._api.get(url=f"Wells/{str(well_id)}/Wellbores")
+            data = self._api.get(url=f"Wells/{well.id}/Wellbores")
 
         if well_id is not None:
             # Get Wellbores for singular well
