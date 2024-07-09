@@ -149,7 +149,7 @@ class Soe:
             A list of `SoeChemicalMeasurement` objects for the Job.
 
         """
-        if job is not None and any(v is not None for v in [job, wellbore_id, job_id]):
+        if job is not None and any(v is not None for v in [wellbore_id, job_id]):
             raise ValueError("Either job or wellbore_id and job_id must be provided, not both.")
         if job is not None:
             return self._get_chemical_measurements(wellbore_id=job.wellbore_id, job_id=job.id)
