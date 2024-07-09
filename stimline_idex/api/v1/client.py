@@ -4,7 +4,7 @@ from requests import Session
 
 from .api import IDEXApi
 from .auth import IDEXAuth
-from .modules import Soe, Surveys, Units, Wellbores, Wells
+from .modules import Customers, Soe, Surveys, Units, Wellbores, Wells
 
 
 class IDEXClient:
@@ -13,6 +13,8 @@ class IDEXClient:
             session = Session()
 
         self._api = IDEXApi(auth=auth, session=session)
+
+        self.customers = Customers(api=self._api)
         self.soe = Soe(api=self._api)
         self.surveys = Surveys(api=self._api)
         self.units = Units(api=self._api)
