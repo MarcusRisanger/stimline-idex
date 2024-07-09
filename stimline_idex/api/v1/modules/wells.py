@@ -1,6 +1,9 @@
 from typing import Any, Optional, Union, overload
-from ..api import IDEXApi
+
+from stimline_idex.data_schemas import IdType
+
 from ....data_schemas.v1.assets import Well
+from ..api import IDEXApi
 
 
 class Wells:
@@ -8,7 +11,7 @@ class Wells:
         self._api = api
 
     @overload
-    def get(self, *, id: str) -> Well: ...
+    def get(self, *, id: IdType) -> Well: ...
 
     @overload
     def get(
@@ -24,14 +27,17 @@ class Wells:
     def get(
         self,
         *,
-        id: Optional[str] = None,
+        id: Optional[IdType] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
     ) -> Union[Well, list[Well]]:
-        if isinstance(id, str):
+        if id is not None and any(v is not None for v in [filter, select, top, skip, order_by]):
+            raise ValueError("You can only submit either an ID or parameters, not both.")
+
+        if id is not None:
             # Get singular well
             data = self._api.get(url=f"Wells/{id}")
             return Well.model_validate(data.json())
@@ -50,6 +56,9 @@ class Wells:
             params["$orderby"] = order_by
 
         data = self._api.get(url="Wells", params=params)
+
+        if data.status_code == 204:
+            return []
 
         return [Well.model_validate(row) for row in data.json()]
 
