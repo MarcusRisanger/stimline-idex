@@ -101,6 +101,15 @@ class Customer(IDEXAudit):
     street_address: Optional[str]
 
 
+class Log(IDEXAudit):
+    id: str
+    name: Optional[str]
+    description: Optional[str]
+    index_type: Optional[str]
+    status: Optional[str]
+    source_name: Optional[str]
+
+
 class _Tangible(IDEX):
     type: Optional[str]
     od: DoubleNullableUomValue

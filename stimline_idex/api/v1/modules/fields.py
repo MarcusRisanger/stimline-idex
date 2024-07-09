@@ -56,7 +56,6 @@ class Fields:
 
         """
         if id is not None:
-            # Get singular Customer
             logging.debug(f"Getting Field with ID: {id}")
             data = self._api.get(url=f"Fields/{id}")
             return Field.model_validate(data.json())

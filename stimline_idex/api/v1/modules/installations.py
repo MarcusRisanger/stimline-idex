@@ -56,7 +56,6 @@ class Installations:
 
         """
         if id is not None:
-            # Get singular Customer
             logging.debug(f"Getting Installation with ID: {id}")
             data = self._api.get(url=f"Installations/{id}")
             return Installation.model_validate(data.json())
