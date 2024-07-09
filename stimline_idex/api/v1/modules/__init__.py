@@ -1,5 +1,7 @@
 from .customers import Customers
 from .fields import Fields
+from .installations import Installations
+from .reels import Reels
 from .runs import Runs
 from .soe import Soe
 from .surveys import Surveys
@@ -10,6 +12,8 @@ from .wells import Wells
 __all__ = [
     "Customers",
     "Fields",
+    "Installations",
+    "Reels",
     "Runs",
     "Soe",
     "Surveys",

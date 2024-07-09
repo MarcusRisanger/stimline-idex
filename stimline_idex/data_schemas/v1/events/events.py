@@ -80,12 +80,12 @@ class JobHistory(IDEXAuditLite):
     customer_id: Optional[str]
     well_name: Optional[str]
     well_id: Optional[str]
-    well_time_zone: str
+    well_time_zone: Optional[str]
     added_dhrm: DoubleNullableUomValue = Field(alias="addedDHRM")
-    weight_pull_avg: DoubleNullableUomValue
+    weight_pull_avg: DoubleNullableUomValue = Field(alias="weightPullAverage")
     weight_pull_min: DoubleNullableUomValue
     weight_pull_max: DoubleNullableUomValue
-    weight_push_avg: DoubleNullableUomValue
+    weight_push_avg: DoubleNullableUomValue = Field(alias="weightPushAverage")
     weight_push_min: DoubleNullableUomValue
     weight_push_max: DoubleNullableUomValue
     speed_pooh_avg: DoubleNullableUomValue = Field(alias="speedPOOHAverage")

@@ -1,4 +1,4 @@
-from .events import ScheduledJob, Survey, SurveyStation
+from .events import JobHistory, Maintenance, ScheduledJob, Survey, SurveyStation
 from .soe import SoeActivity, SoeChemicalMeasurement, SoeJob, SoeSensorValues, SoeTask
 from .tests import (
     ApiBuildUpTest,
@@ -14,6 +14,8 @@ from .tests import (
 
 __all__ = [
     # Events
+    "JobHistory",
+    "Maintenance",
     "ScheduledJob",
     "Survey",
     "SurveyStation",
