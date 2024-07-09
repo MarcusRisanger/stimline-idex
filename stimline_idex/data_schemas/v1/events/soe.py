@@ -1,8 +1,10 @@
-from pydantic import Field
-from ..base import IDEX, IDEXAuditLite, DoubleNullableUomValue
-from uuid import UUID
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
+
+from pydantic import Field
+
+from ..base import IDEX, DoubleNullableUomValue, IDEXAuditLite
 
 
 class SoeSensorValues(IDEX):
@@ -59,6 +61,7 @@ class SoeChemicalMeasurement(IDEX):
     value: float
     uom: Optional[str]
     comment: Optional[str]
+    wellbore_id: Optional[str] = Field(default=None)  # Not part of the payload - added separately
 
 
 class SoeJob(IDEXAuditLite):

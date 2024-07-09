@@ -1,5 +1,5 @@
 from typing import Optional, overload
-from ..api import IDEXApi
+
 from ....data_schemas import IdType
 from ....data_schemas.v1.assets import Wellbore
 from ....data_schemas.v1.events import (
@@ -8,6 +8,7 @@ from ....data_schemas.v1.events import (
     SoeJob,
     SoeTask,
 )
+from ..api import IDEXApi
 
 
 class Soe:
@@ -39,7 +40,10 @@ class Soe:
         if data.status_code == 204:
             return []
 
-        return [SoeChemicalMeasurement.model_validate(row) for row in data.json()]
+        measurements = [SoeChemicalMeasurement.model_validate(row) for row in data.json()]
+        for measurement in measurements:
+            measurement.wellbore_id = wellbore_id
+        return measurements
 
     def _get_activities(self, wellbore_id: IdType, job_id: IdType, task_id: IdType) -> list[SoeActivity]:
         wellbore_id, job_id, task_id = str(wellbore_id), str(job_id), str(task_id)
