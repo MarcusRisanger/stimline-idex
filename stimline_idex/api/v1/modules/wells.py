@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Optional, Union, overload
 
 from ....data_schemas.v1.assets import Well
@@ -58,6 +59,7 @@ class Wells:
         """
         if id is not None:
             # Get singular well
+            logging.debug(f"Getting Well with ID: {id}")
             data = self._api.get(url=f"Wells/{id}")
             return Well.model_validate(data.json())
 

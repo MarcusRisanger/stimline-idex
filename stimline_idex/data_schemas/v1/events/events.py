@@ -9,6 +9,7 @@ from ..base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite
 class Maintenance(IDEXAuditLite):
     """Describes a maintenance event."""
 
+    id: str
     location_id: Optional[str]
     type: Optional[str]
     description: Optional[str]
@@ -21,17 +22,18 @@ class Maintenance(IDEXAuditLite):
 class Run(IDEXAudit):
     """Describes a run."""
 
+    id: str
     name: Optional[str]
     start_time: datetime
     end_time: Optional[datetime]
-    status: int
+    status: str  # Enum but docs doesn't specify
     run_task: Optional[str]
     job_type: Optional[str]
     unit_id: Optional[str]
     hidden: bool
     wellbore_id: str
     log_ids: list[str]
-    work_order_number: Optional[str]
+    work_order_number: Optional[str] = Field(default=None)
 
 
 class SurveyStation(IDEX):
@@ -69,6 +71,7 @@ class Survey(IDEX):
 class JobHistory(IDEXAuditLite):
     """Describes a historical job event."""
 
+    id: str
     coiled_tubing_string: Optional[str]
     coiled_tubing_string_id: Optional[str]
     reel_name: Optional[str]
@@ -96,6 +99,7 @@ class JobHistory(IDEXAuditLite):
 
 
 class ScheduledJob(IDEXAuditLite):
+    id: str
     name: Optional[str]
     job_plan: Optional[str]
     customer: Optional[str]

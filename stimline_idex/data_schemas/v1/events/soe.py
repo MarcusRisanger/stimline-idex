@@ -22,6 +22,7 @@ class SoeSensorValues(IDEX):
 class SoeActivity(IDEXAuditLite):
     """Describes an Activity in a SoeTask."""
 
+    id: str
     task_id: str
     name: Optional[str]
     type: Optional[str]
@@ -35,6 +36,7 @@ class SoeActivity(IDEXAuditLite):
 class SoeTask(IDEXAuditLite):
     """Describes a SoeTask for a given Job."""
 
+    id: str
     job_id: str
     name: Optional[str]
     conveyance_type: Optional[str]
@@ -66,6 +68,7 @@ class SoeChemicalMeasurement(IDEX):
 class SoeJob(IDEXAuditLite):
     """Describes a Sequence of Events (Soe) Job."""
 
+    id: str
     wellbore_id: str
     name: Optional[str]
     start: Optional[datetime]

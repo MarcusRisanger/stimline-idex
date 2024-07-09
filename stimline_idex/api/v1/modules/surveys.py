@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Optional, overload
 
 from ....data_schemas.v1.assets import Wellbore
@@ -43,7 +44,7 @@ class Surveys:
         ----------
         wellbore : Optional[Wellbore]
             Wellbore object to get Surveys for.
-        wellbore_id : Optional[IdType]
+        wellbore_id : Optional[str]
             Wellbore ID to get Surveys for.
         filter : Optional[str]
             OData filter string.
@@ -64,10 +65,12 @@ class Surveys:
         """
         if wellbore is not None:
             # Get for singular wellbore
+            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore.id}")
             data = self._api.get(url=f"Wellbores/{wellbore.id}/Surveys")
 
         elif wellbore_id is not None:
             # Get for singular wellbore
+            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore_id}")
             data = self._api.get(url=f"Wellbores/{wellbore_id}/Surveys")
 
         else:

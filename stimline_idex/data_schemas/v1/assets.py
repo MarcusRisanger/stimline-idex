@@ -9,12 +9,14 @@ from .base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite
 
 
 class Wellbore(IDEXAudit):
+    id: str
     name: str
     well_id: Optional[str]
     item_state: Optional[str]
 
 
 class Well(IDEXAudit):
+    id: str
     name: Optional[str] = PField(default=None)
     facility: Optional[str] = PField(default=None)
     field: Optional[str] = PField(default=None)
@@ -34,6 +36,7 @@ class Well(IDEXAudit):
 
 
 class WellboreLiveStatus(IDEXAudit):
+    id: str
     wellbore_id: str
     is_live: bool
     is_live_last_changed: datetime
@@ -51,6 +54,7 @@ class Unit(IDEX):
 
 
 class Equipment(IDEXAuditLite):
+    id: str
     manufacturer: Optional[str]
     manufactured_date: Optional[datetime]
     next_maintenance_type: Optional[str]
@@ -87,10 +91,12 @@ class InjectorHead(Equipment):
 
 
 class Field(IDEXAudit):
+    id: str
     name: Optional[str]
 
 
 class Customer(IDEXAudit):
+    id: str
     name: Optional[str]
     street_address: Optional[str]
 

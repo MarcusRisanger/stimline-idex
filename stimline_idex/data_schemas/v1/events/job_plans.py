@@ -65,6 +65,7 @@ class Document(IDEXAuditLite):
     Endpoint allows for selecting return columns, need default Nones.
     """
 
+    id: str
     job_plan_id: Optional[str]
     job_plan_name: Optional[str] = Field(default=None)
     file_name: Optional[str] = Field(default=None)

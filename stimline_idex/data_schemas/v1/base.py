@@ -21,7 +21,6 @@ class IDEX(BaseModel):
 class IDEXAuditLite(IDEX):
     """For subclasses with API audit fields."""
 
-    id: str
     created_date: Optional[datetime] = Field(default=None)
     modified_date: Optional[datetime] = Field(default=None)
 

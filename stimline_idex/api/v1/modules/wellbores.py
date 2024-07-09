@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Optional, Union, overload
 
 from ....data_schemas.v1.assets import Well, Wellbore
@@ -67,27 +68,20 @@ class Wellbores:
             The `Wellbore` object(s).
 
         """
-        ids_submitted = sum(1 for x in [id, well, well_id] if x is not None)
-        any_id_submitted = ids_submitted >= 1
-        one_id_submitted = ids_submitted == 1
-        any_param_submitted = sum(1 for x in [filter, select, top, skip, order_by] if x is not None) >= 1
-
-        if any_id_submitted and any_param_submitted:
-            raise ValueError("You can only submit either an ID or parameters, not both.")
-        elif any_id_submitted and not one_id_submitted:
-            raise ValueError("You can only submit one ID.")
-
         if id is not None:
             # Get singular well
+            logging.debug("Getting Wellbore with ID: {id}")
             data = self._api.get(url=f"Wellbores/{id}")
             return Wellbore.model_validate(data.json())
 
-        if well is not None:
+        elif well is not None:
+            logging.debug(f"Getting Wellbores for Well with ID: {well.id}")
             # Get Wellbores for singular well
             data = self._api.get(url=f"Wells/{well.id}/Wellbores")
 
-        if well_id is not None:
+        elif well_id is not None:
             # Get Wellbores for singular well
+            logging.debug(f"Getting Wellbores for Well with ID: {well_id}")
             data = self._api.get(url=f"Wells/{well_id}/Wellbores")
 
         else:
