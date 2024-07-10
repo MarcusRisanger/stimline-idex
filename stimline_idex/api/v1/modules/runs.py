@@ -12,15 +12,24 @@ class Runs:
         self._api = api
 
     @overload
-    def get(self, *, unit: Unit) -> list[Run]: ...
+    def get(self, *, unit: Unit, include_soft_delete: Optional[bool] = False) -> list[Run]: ...
     @overload
-    def get(self, *, wellbore: Wellbore) -> list[Run]: ...
+    def get(self, *, wellbore: Wellbore, include_soft_delete: Optional[bool] = False) -> list[Run]: ...
     @overload
-    def get(self, *, unit_id: str) -> list[Run]: ...
+    def get(self, *, unit_id: str, include_soft_delete: Optional[bool] = False) -> list[Run]: ...
     @overload
-    def get(self, *, wellbore_id: str) -> list[Run]: ...
+    def get(self, *, wellbore_id: str, include_soft_delete: Optional[bool] = False) -> list[Run]: ...
     @overload
-    def get(self, *, filter: str, select: list[str], top: int, skip: int, order_by: str) -> list[Run]: ...
+    def get(
+        self,
+        *,
+        filter: str,
+        select: list[str],
+        top: int,
+        skip: int,
+        order_by: str,
+        include_soft_delete: Optional[bool] = False,
+    ) -> list[Run]: ...
 
     def get(
         self,
@@ -33,6 +42,7 @@ class Runs:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> list[Run]:
         """
         Get `Run` objects.
@@ -57,6 +67,8 @@ class Runs:
             Skip the first N results.
         order_by : Optional[str]
             Order the results by columns.
+        include_soft_delete : Optional[bool] = False
+            Include soft deleted records.
 
         Returns
         -------
@@ -98,7 +110,12 @@ class Runs:
             logging.debug("No Runs found.")
             return []
 
-        return [Run.model_validate(row) for row in data.json()]
+        runs = [Run.model_validate(row) for row in data.json()]
+
+        if include_soft_delete:
+            return runs
+
+        return [run for run in runs if run.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

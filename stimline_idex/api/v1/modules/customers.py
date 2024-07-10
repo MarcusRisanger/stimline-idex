@@ -20,6 +20,7 @@ class Customers:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> list[Customer]: ...
 
     def get(
@@ -30,6 +31,7 @@ class Customers:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> Union[Customer, list[Customer]]:
         """
         Get `Customer` object(s).
@@ -48,6 +50,8 @@ class Customers:
             Skip the first N results.
         order_by : Optional[str]
             Order the results by columns.
+        include_soft_delete : Optional[bool] = False
+            Include soft deleted records.
 
         Returns
         -------
@@ -78,7 +82,12 @@ class Customers:
         if data.status_code == 204:
             return []
 
-        return [Customer.model_validate(row) for row in data.json()]
+        customers = [Customer.model_validate(row) for row in data.json()]
+
+        if include_soft_delete:
+            return customers
+
+        return [customer for customer in customers if customer.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

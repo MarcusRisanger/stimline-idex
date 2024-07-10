@@ -20,6 +20,7 @@ class Installations:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> list[Installation]: ...
 
     def get(
@@ -30,6 +31,7 @@ class Installations:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> Union[Installation, list[Installation]]:
         """
         Get `Installation` object(s).
@@ -48,6 +50,8 @@ class Installations:
             Skip the first N results.
         order_by : Optional[str]
             Order the results by columns.
+        include_soft_delete : Optional[bool] = False
+            Include soft deleted records.
 
         Returns
         -------
@@ -73,12 +77,17 @@ class Installations:
         if order_by is not None:
             params["$orderby"] = order_by
 
-        data = self._api.get(url="Installation", params=params)
+        data = self._api.get(url="Installations", params=params)
 
         if data.status_code == 204:
             return []
 
-        return [Installation.model_validate(row) for row in data.json()]
+        installations = [Installation.model_validate(row) for row in data.json()]
+
+        if include_soft_delete:
+            return installations
+
+        return [inst for inst in installations if inst.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

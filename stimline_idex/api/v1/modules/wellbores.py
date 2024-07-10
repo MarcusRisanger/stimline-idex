@@ -21,12 +21,13 @@ class Wellbores:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = None,
     ) -> list[Wellbore]: ...
 
     @overload
-    def get(self, *, well: Well) -> list[Wellbore]: ...
+    def get(self, *, well: Well, include_soft_delete: Optional[bool] = None) -> list[Wellbore]: ...
     @overload
-    def get(self, *, well_id: str) -> list[Wellbore]: ...
+    def get(self, *, well_id: str, include_soft_delete: Optional[bool] = None) -> list[Wellbore]: ...
 
     def get(
         self,
@@ -39,6 +40,7 @@ class Wellbores:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> Union[Wellbore, list[Wellbore]]:
         """
         Get `Wellbore` object(s).
@@ -61,6 +63,8 @@ class Wellbores:
             Skip the first N results.
         order_by : Optional[str]
             Order the results by columns.
+        include_soft_delete : Optional[bool] = False
+            Include soft deleted records.
 
         Returns
         -------
@@ -103,7 +107,12 @@ class Wellbores:
         if data.status_code == 204:
             return []
 
-        return [Wellbore.model_validate(row) for row in data.json()]
+        wellbores = [Wellbore.model_validate(row) for row in data.json()]
+
+        if include_soft_delete:
+            return wellbores
+
+        return [wb for wb in wellbores if wb.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

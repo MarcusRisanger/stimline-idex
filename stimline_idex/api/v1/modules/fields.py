@@ -20,6 +20,7 @@ class Fields:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> list[Field]: ...
 
     def get(
@@ -30,6 +31,7 @@ class Fields:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> Union[Field, list[Field]]:
         """
         Get `Field` object(s).
@@ -48,6 +50,8 @@ class Fields:
             Skip the first N results.
         order_by : Optional[str]
             Order the results by columns.
+        include_soft_delete : Optional[bool] = False
+            Include soft deleted records.
 
         Returns
         -------
@@ -78,7 +82,12 @@ class Fields:
         if data.status_code == 204:
             return []
 
-        return [Field.model_validate(row) for row in data.json()]
+        fields = [Field.model_validate(row) for row in data.json()]
+
+        if include_soft_delete:
+            return fields
+
+        return [field for field in fields if field.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]
