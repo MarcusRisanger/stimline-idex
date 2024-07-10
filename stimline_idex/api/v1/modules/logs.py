@@ -3,6 +3,7 @@ from typing import Optional, Union, overload
 
 from ....data_schemas.v1.assets import Log, Unit
 from ..api import IDEXApi
+from .text_utils import url_encode_id
 
 
 class Logs:
@@ -48,13 +49,14 @@ class Logs:
 
         if unit is not None:
             logging.debug(f"Getting Logs for Unit with ID: {unit.id}")
-            data = self._api.get(url=f"Units/{unit.id}/Logs")
+            id = url_encode_id(unit.id)
         elif unit_id is not None:
             logging.debug(f"Getting Logs for Unit with ID: {unit_id}")
-            data = self._api.get(url=f"Units/{unit_id}/Logs")
+            id = url_encode_id(unit_id)
         else:
             raise ValueError("Either `unit` or `unit_id` must be provided.")
 
+        data = self._api.get(url=f"Units/{id}/Logs")
         if data.status_code == 204:
             return []
 
