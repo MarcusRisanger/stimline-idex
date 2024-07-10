@@ -31,21 +31,6 @@ class IDEXAudit(IDEXAuditLite):
     deleted_date: Optional[datetime] = Field(default=None)
 
 
-class Range(IDEX):
-    """Describes a Range."""
-
-    id: str
-    start: datetime
-    end: datetime
-
-
-class TimeRange(IDEX):
-    """Describes a Time Range."""
-
-    start: datetime
-    end: datetime
-
-
 class TimeDuration(IDEX):
     """Describes a Time Duration."""
 

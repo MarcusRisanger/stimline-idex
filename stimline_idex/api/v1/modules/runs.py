@@ -23,11 +23,11 @@ class Runs:
     def get(
         self,
         *,
-        filter: str,
-        select: list[str],
-        top: int,
-        skip: int,
-        order_by: str,
+        filter: Optional[str] = None,
+        select: Optional[list[str]] = None,
+        top: Optional[int] = None,
+        skip: Optional[int] = None,
+        order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
     ) -> list[Run]: ...
 
