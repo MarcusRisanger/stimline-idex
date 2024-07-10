@@ -21,13 +21,13 @@ class Wellbores:
         top: Optional[int] = None,
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
-        include_soft_delete: Optional[bool] = None,
+        include_soft_delete: Optional[bool] = False,
     ) -> list[Wellbore]: ...
 
     @overload
-    def get(self, *, well: Well, include_soft_delete: Optional[bool] = None) -> list[Wellbore]: ...
+    def get(self, *, well: Well, include_soft_delete: Optional[bool] = False) -> list[Wellbore]: ...
     @overload
-    def get(self, *, well_id: str, include_soft_delete: Optional[bool] = None) -> list[Wellbore]: ...
+    def get(self, *, well_id: str, include_soft_delete: Optional[bool] = False) -> list[Wellbore]: ...
 
     def get(
         self,
