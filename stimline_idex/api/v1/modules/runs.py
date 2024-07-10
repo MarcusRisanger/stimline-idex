@@ -4,6 +4,7 @@ from typing import Any, Optional, overload
 from ....data_schemas.v1.assets import Unit, Wellbore
 from ....data_schemas.v1.events.events import Run
 from ..api import IDEXApi
+from .text_utils import url_encode_id
 
 
 class Runs:
@@ -15,12 +16,18 @@ class Runs:
     @overload
     def get(self, *, wellbore: Wellbore) -> list[Run]: ...
     @overload
+    def get(self, *, unit_id: str) -> list[Run]: ...
+    @overload
+    def get(self, *, wellbore_id: str) -> list[Run]: ...
+    @overload
     def get(self, *, filter: str, select: list[str], top: int, skip: int, order_by: str) -> list[Run]: ...
 
     def get(
         self,
         unit: Optional[Unit] = None,
+        unit_id: Optional[str] = None,
         wellbore: Optional[Wellbore] = None,
+        wellbore_id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,
@@ -34,8 +41,12 @@ class Runs:
         ----------
         unit : Optional[Unit]
             Unit object to get Runs for.
+        unit_id : Optional[str]
+            Unit ID to get Runs for.
         wellbore : Optional[Wellbore]
             Wellbore object to get Runs for.
+        wellbore_id : Optional[str]
+            Wellbore ID to get Runs for.
         filter : Optional[str]
             OData filter string.
         select : list[str] | None
@@ -53,13 +64,19 @@ class Runs:
             The `Run` objects.
 
         """
-        if unit is not None:
-            logging.debug(f"Getting Runs for Unit with ID: {unit.id}")
-            data = self._api.get(url=f"Units/{unit.id}/Runs")
+        if unit is not None or unit_id is not None:
+            id = unit_id if unit is None else unit.id
+            assert id is not None
+            logging.debug(f"Getting Runs for Unit with ID: {id}")
+            id = url_encode_id(id)
+            data = self._api.get(url=f"Units/{id}/Runs")
 
-        elif wellbore is not None:
-            logging.debug(f"Getting Runs for Wellbore with ID: {wellbore.id}")
-            data = self._api.get(url=f"Wellbores/{wellbore.id}/Runs")
+        elif wellbore is not None or wellbore_id is not None:
+            id = wellbore_id if wellbore is None else wellbore.id
+            assert id is not None
+            logging.debug(f"Getting Runs for Wellbore with ID: {id}")
+            id = url_encode_id(id)
+            data = self._api.get(url=f"Wellbores/{id}/Runs")
 
         else:
             params: dict[str, Any] = {}
