@@ -273,6 +273,10 @@ class Channels:
         """
         Get `ChannelDataResponse` object(s).
 
+        Response is compressed using Brotli compression and MessagePack.
+
+        NOTE: Currently responds with an undocumented 406 error.
+
         Parameters
         ----------
         channels : list[ChannelRange]
