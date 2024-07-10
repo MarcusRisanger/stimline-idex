@@ -138,8 +138,8 @@ class Channels:
         self,
         *,
         channels: list[Channel],
-        start: datetime,
-        end: datetime,
+        start_time: datetime,
+        end_time: datetime,
         limit: int,
         ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
@@ -149,8 +149,8 @@ class Channels:
         self,
         *,
         channel_ids: list[str],
-        start: datetime,
-        end: datetime,
+        start_time: datetime,
+        end_time: datetime,
         limit: int,
         ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
@@ -159,18 +159,44 @@ class Channels:
     def get_data_range(
         self,
         *,
-        start: datetime,
-        end: datetime,
+        start_time: datetime,
+        end_time: datetime,
         limit: int,
         ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
         channels: Optional[list[Channel]] = None,
         channel_ids: Optional[list[str]] = None,
     ) -> list[ChannelDataResponse]:
+        """
+        Get `ChannelDataResponse` object(s).
+
+        Parameters
+        ----------
+        channels : Optional[list[Channel]]
+            Channel objects to get Ranges for.
+        channel_ids : Optional[list[str]]
+            Channel IDs to get Ranges for.
+        start_time : datetime
+            The start time for channel data.
+        end_time : datetime
+            The end time for channel data.
+        limit : int
+            The limit of datapoints to retrieve per channel.
+        ignore_unknown_ids : bool = True
+            Ignore unknown channel IDs.
+        include_outside_pts : bool = True
+            Include outside points.
+
+        Returns
+        -------
+        list[ChannelDataResponse]
+            The `ChannelDataResponse` object(s).
+
+        """
         payload = ChannelDataRequest.model_construct(
             ids=[channel.id for channel in channels] if channels is not None else channel_ids,
-            start=start,
-            end=end,
+            start=start_time,
+            end=end_time,
             limit=limit,
             ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
