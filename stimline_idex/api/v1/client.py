@@ -14,6 +14,7 @@ from .modules import (
     Soe,
     Surveys,
     Tests,
+    UnitActiveWellbores,
     Units,
     Wellbores,
     Wells,
@@ -36,6 +37,7 @@ class IDEXClient:
         self.soe = Soe(api=self._api)
         self.surveys = Surveys(api=self._api)
         self.tests = Tests(api=self._api)
+        self.unit_active_wellbores = UnitActiveWellbores(api=self._api)
         self.units = Units(api=self._api)
         self.wells = Wells(api=self._api)
         self.wellbores = Wellbores(api=self._api)

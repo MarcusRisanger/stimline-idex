@@ -7,6 +7,7 @@ from .runs import Runs
 from .soe import Soe
 from .surveys import Surveys
 from .tests import Tests
+from .unit_active_wellbore import UnitActiveWellbores
 from .units import Units
 from .wellbores import Wellbores
 from .wells import Wells
@@ -21,6 +22,7 @@ __all__ = [
     "Soe",
     "Surveys",
     "Tests",
+    "UnitActiveWellbores",
     "Units",
     "Wells",
     "Wellbores",

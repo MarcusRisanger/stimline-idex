@@ -111,3 +111,9 @@ class ScheduledJob(IDEXAuditLite):
     well_time_zone: Optional[str]
     start_time: Optional[datetime]
     end_time: Optional[datetime]
+
+
+class UnitActiveWellbore(IDEXAudit):
+    id: str
+    unit_id: str
+    wellbore_id: str
