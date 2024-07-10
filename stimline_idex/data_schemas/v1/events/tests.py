@@ -1,7 +1,9 @@
 from datetime import timedelta
-from pydantic import Field
-from ..base import IDEX
 from typing import Optional
+
+from pydantic import Field
+
+from ..base import IDEX
 
 
 class _TestBase(IDEX):
@@ -13,7 +15,7 @@ class _TestBase(IDEX):
     sensor_name: Optional[str]
     created_date: Optional[str]
     comment: Optional[str]
-    result: Optional[str]
+    result: Optional[bool]
     user: Optional[str]
 
 
@@ -25,18 +27,12 @@ class _StartEndPressureTest(_TestBase):
     duration: timedelta
 
 
-class _BuildUpTest(_StartEndPressureTest):
+class BuildUpTest(_StartEndPressureTest):
     result_percentage: Optional[float]
     result_bar: Optional[float]
 
 
-class ApiBuildUpTest(_BuildUpTest): ...
-
-
-class QtsTest(_BuildUpTest): ...
-
-
-class InflowTest(_BuildUpTest):
+class InflowTest(BuildUpTest):
     """Describes a flow test: InflowTest."""
 
     delta_bar: Optional[float]
@@ -50,18 +46,18 @@ class PressureTest(_TestBase):
 
     lp_start_pressure_bar: Optional[float]
     lp_end_pressure_bar: Optional[float]
-    lp_duration: timedelta
+    lp_duration: Optional[timedelta]
     lp_result_percentage: Optional[float]
     lp_result_bar: Optional[float]
     lp_reference_delta_p_bar: Optional[float]
     hp_start_pressure_bar: Optional[float]
     hp_end_pressure_bar: Optional[float]
-    hp_duration: timedelta
+    hp_duration: Optional[timedelta]
     hp_result_percentage: Optional[float]
     hp_result_bar: Optional[float]
 
 
-class _ApiLeakRateTest(_StartEndPressureTest):
+class LeakRateTest(_StartEndPressureTest):
     """Describes an API leak rate test."""
 
     volume_m3: Optional[float]
@@ -71,19 +67,13 @@ class _ApiLeakRateTest(_StartEndPressureTest):
     criteria_lpm: Optional[float] = Field(alias="criteriaLperMin")
 
 
-class XmtHmvApiLeakRateTest(_ApiLeakRateTest): ...
-
-
-class XmtLmvApiLeakRateTest(_ApiLeakRateTest): ...
-
-
-class SssvApiLeakRateTest(_ApiLeakRateTest):
+class SssvLeakRateTest(LeakRateTest):
     """Describes a SSSV API leak rate test."""
 
     sssv_depth_meter: Optional[float]
 
 
-class AsvApiLeakRateTest(_ApiLeakRateTest):
+class AsvLeakRateTest(LeakRateTest):
     """Describe an ASV API leak rate test."""
 
     asv_depth_meter: Optional[float]

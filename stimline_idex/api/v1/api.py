@@ -29,7 +29,9 @@ class IDEXApi:
     def _send_request(self, *, method: str, url: str, **kwargs: Any) -> Response:
         self._authenticate()
         request_url = urljoin(self.base_url, url)
-        return self.session.request(method=method, url=request_url, **kwargs)
+        rsp = self.session.request(method=method, url=request_url, **kwargs)
+        rsp.raise_for_status()
+        return rsp
 
     def get(self, *, url: str, **kwargs: Any) -> Response:
         return self._send_request(method="GET", url=url, **kwargs)
