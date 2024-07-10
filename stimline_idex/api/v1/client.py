@@ -5,6 +5,7 @@ from requests import Session
 from .api import IDEXApi
 from .auth import IDEXAuth
 from .modules import (
+    ChangeLogs,
     Customers,
     Fields,
     Installations,
@@ -31,6 +32,7 @@ class IDEXClient:
 
         self._api = IDEXApi(auth=auth, session=session)
 
+        self.change_logs = ChangeLogs(api=self._api)
         self.customers = Customers(api=self._api)
         self.fields = Fields(api=self._api)
         self.installations = Installations(api=self._api)

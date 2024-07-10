@@ -1,3 +1,4 @@
+from .change_logs import ChangeLogs
 from .customers import Customers
 from .fields import Fields
 from .installations import Installations
@@ -16,6 +17,7 @@ from .wellbores import Wellbores
 from .wells import Wells
 
 __all__ = [
+    "ChangeLogs",
     "Customers",
     "Fields",
     "Installations",
