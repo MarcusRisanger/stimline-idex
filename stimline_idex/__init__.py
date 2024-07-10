@@ -1,3 +1,4 @@
-from .api.v1 import IDEXClient as IDEXClientv1
+from .api.v1 import IDEXClient
+from .api.v1.auth import ApiKeyAuth, JwtAuth
 
-__all__ = ["IDEXClientv1"]
+__all__ = ["IDEXClient", "ApiKeyAuth", "JwtAuth"]

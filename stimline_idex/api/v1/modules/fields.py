@@ -1,17 +1,16 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas.v1.assets import Well
+from ....data_schemas.v1.assets import Field
 from ..api import IDEXApi
 
 
-class Wells:
+class Fields:
     def __init__(self, api: IDEXApi) -> None:
         self._api = api
 
     @overload
-    def get(self, *, id: str) -> Well: ...
-
+    def get(self, *, id: str) -> Field: ...
     @overload
     def get(
         self,
@@ -22,11 +21,10 @@ class Wells:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
-    ) -> list[Well]: ...
+    ) -> list[Field]: ...
 
     def get(
         self,
-        *,
         id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
@@ -34,14 +32,14 @@ class Wells:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
-    ) -> Union[Well, list[Well]]:
+    ) -> Union[Field, list[Field]]:
         """
-        Get `Well` object(s).
+        Get `Field` object(s).
 
         Parameters
         ----------
         id : Optional[str]
-            Well to retrieve.
+            Field to retrieve.
         filter : Optional[str]
             OData filter string.
         select : list[str] | None
@@ -57,15 +55,14 @@ class Wells:
 
         Returns
         -------
-        Union[Well, list[Well]]
-            The `Well` object(s).
+        Union[Field, list[Field]]
+            The `Field` object(s).
 
         """
         if id is not None:
-            # Get singular well
-            logging.debug(f"Getting Well with ID: {id}")
-            data = self._api.get(url=f"Wells/{id}")
-            return Well.model_validate(data.json())
+            logging.debug(f"Getting Field with ID: {id}")
+            data = self._api.get(url=f"Fields/{id}")
+            return Field.model_validate(data.json())
 
         params: dict[str, Any] = {}
         if filter is not None:
@@ -80,17 +77,17 @@ class Wells:
         if order_by is not None:
             params["$orderby"] = order_by
 
-        data = self._api.get(url="Wells", params=params)
+        data = self._api.get(url="Fields", params=params)
 
         if data.status_code == 204:
             return []
 
-        wells = [Well.model_validate(row) for row in data.json()]
+        fields = [Field.model_validate(row) for row in data.json()]
 
         if include_soft_delete:
-            return wells
+            return fields
 
-        return [well for well in wells if well.deleted_date is None]
+        return [field for field in fields if field.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

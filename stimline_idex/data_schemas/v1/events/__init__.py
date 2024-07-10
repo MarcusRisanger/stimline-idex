@@ -1,22 +1,24 @@
-from .events import ScheduledJob, Survey, SurveyStation
+from .events import JobHistory, Maintenance, ScheduledJob, Survey, SurveyStation, UnitActiveWellbore, WellboreHistory
 from .soe import SoeActivity, SoeChemicalMeasurement, SoeJob, SoeSensorValues, SoeTask
 from .tests import (
-    ApiBuildUpTest,
-    AsvApiLeakRateTest,
+    AsvLeakRateTest,
+    BuildUpTest,
     Inflow30MinTest,
     InflowTest,
+    LeakRateTest,
     PressureTest,
-    QtsTest,
-    SssvApiLeakRateTest,
-    XmtHmvApiLeakRateTest,
-    XmtLmvApiLeakRateTest,
+    SssvLeakRateTest,
 )
 
 __all__ = [
     # Events
+    "JobHistory",
+    "Maintenance",
     "ScheduledJob",
     "Survey",
     "SurveyStation",
+    "UnitActiveWellbore",
+    "WellboreHistory",
     # Soe
     "SoeActivity",
     "SoeChemicalMeasurement",
@@ -24,13 +26,11 @@ __all__ = [
     "SoeSensorValues",
     "SoeTask",
     # Tests
-    "ApiBuildUpTest",
-    "AsvApiLeakRateTest",
+    "AsvLeakRateTest",
+    "BuildUpTest",
     "InflowTest",
     "Inflow30MinTest",
+    "LeakRateTest",
     "PressureTest",
-    "SssvApiLeakRateTest",
-    "QtsTest",
-    "XmtHmvApiLeakRateTest",
-    "XmtLmvApiLeakRateTest",
+    "SssvLeakRateTest",
 ]

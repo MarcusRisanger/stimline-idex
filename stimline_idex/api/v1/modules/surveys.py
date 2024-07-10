@@ -1,6 +1,6 @@
-from typing import Any, Optional, Union, overload
+import logging
+from typing import Any, Optional, overload
 
-from ....data_schemas import IdType
 from ....data_schemas.v1.assets import Wellbore
 from ....data_schemas.v1.events import Survey, SurveyStation
 from ..api import IDEXApi
@@ -30,7 +30,7 @@ class Surveys:
         self,
         *,
         wellbore: Optional[Wellbore] = None,
-        wellbore_id: Optional[IdType] = None,
+        wellbore_id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
         top: Optional[int] = None,
@@ -38,13 +38,13 @@ class Surveys:
         order_by: Optional[str] = None,
     ) -> list[Survey]:
         """
-        Get a list of Survey objects.
+        Get `Survey` objects.
 
         Parameters
         ----------
         wellbore : Optional[Wellbore]
             Wellbore object to get Surveys for.
-        wellbore_id : Optional[IdType]
+        wellbore_id : Optional[str]
             Wellbore ID to get Surveys for.
         filter : Optional[str]
             OData filter string.
@@ -60,18 +60,18 @@ class Surveys:
         Returns
         -------
         list[Survey]
-            A list of Wellbore objects.
+            The `Survey` objects.
 
         """
         if wellbore is not None:
             # Get for singular wellbore
-            wb_id = str(wellbore.id)
-            data = self._api.get(url=f"Wellbores/{wb_id}/Surveys")
+            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore.id}")
+            data = self._api.get(url=f"Wellbores/{wellbore.id}/Surveys")
 
         elif wellbore_id is not None:
             # Get for singular wellbore
-            wb_id = str(wellbore_id)
-            data = self._api.get(url=f"Wellbores/{wb_id}/Surveys")
+            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore_id}")
+            data = self._api.get(url=f"Wellbores/{wellbore_id}/Surveys")
 
         else:
             # Get all surveys matching filters
@@ -94,8 +94,7 @@ class Surveys:
 
         return [Survey.model_validate(row) for row in data.json()]
 
-    def _get_stations(self, survey_id: IdType) -> list[SurveyStation]:
-        survey_id = str(survey_id)
+    def _get_stations(self, survey_id: str) -> list[SurveyStation]:
         data = self._api.get(url=f"Surveys/{survey_id}/Stations")
         if data.status_code == 204:
             return []
@@ -109,15 +108,15 @@ class Surveys:
     def get_stations(
         self,
         *,
-        survey: Optional[Union[Survey, list[Survey]]] = None,
+        survey: Optional[Survey] = None,
         survey_id: Optional[str] = None,
     ) -> list[SurveyStation]:
         if all(v is None for v in [survey, survey_id]):
             raise ValueError("Must provide either a Survey object or a survey_id.")
 
-        if isinstance(survey, Survey):
+        if survey is not None:
             return self._get_stations(survey.id)
-        elif isinstance(survey_id, str):
+        elif survey_id is not None:
             return self._get_stations(survey_id)
         else:
             raise ValueError("Invalid input. Must provide either a Survey object or a survey_id.")

@@ -1,16 +1,16 @@
 from datetime import datetime
-from uuid import UUID
+from typing import Optional
 
 from pydantic import Field
 
-from ..base import DoubleNullableUomValue, IDEXAuditLite, IDEXAudit, IDEX
-from typing import Optional
+from ..base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite
 
 
 class Maintenance(IDEXAuditLite):
     """Describes a maintenance event."""
 
-    location_id: Optional[UUID]
+    id: str
+    location_id: Optional[str]
     type: Optional[str]
     description: Optional[str]
     repair_notes: Optional[str]
@@ -22,23 +22,24 @@ class Maintenance(IDEXAuditLite):
 class Run(IDEXAudit):
     """Describes a run."""
 
+    id: str
     name: Optional[str]
     start_time: datetime
     end_time: Optional[datetime]
-    status: int
+    status: str  # Enum but docs doesn't specify
     run_task: Optional[str]
     job_type: Optional[str]
     unit_id: Optional[str]
     hidden: bool
-    wellbore_id: UUID
+    wellbore_id: str
     log_ids: list[str]
-    work_order_number: Optional[str]
+    work_order_number: Optional[str] = Field(default=None)
 
 
 class SurveyStation(IDEX):
     """Describes a single survey station."""
 
-    id: UUID
+    id: str
     md: float
     tvd: Optional[float]
     incl: float
@@ -52,9 +53,9 @@ class SurveyStation(IDEX):
 class Survey(IDEX):
     """Describes a wellbore survey."""
 
-    id: UUID
+    id: str
     name: Optional[str]
-    wellbore_id: UUID
+    wellbore_id: str
     md_uom: Optional[str]
     tvd_uom: Optional[str]
     inc_uom: Optional[str]
@@ -70,20 +71,21 @@ class Survey(IDEX):
 class JobHistory(IDEXAuditLite):
     """Describes a historical job event."""
 
+    id: str
     coiled_tubing_string: Optional[str]
-    coiled_tubing_string_id: Optional[UUID]
+    coiled_tubing_string_id: Optional[str]
     reel_name: Optional[str]
-    reel_id: Optional[UUID]
+    reel_id: Optional[str]
     customer: Optional[str]
-    customer_id: Optional[UUID]
+    customer_id: Optional[str]
     well_name: Optional[str]
-    well_id: Optional[UUID]
-    well_time_zone: str
+    well_id: Optional[str]
+    well_time_zone: Optional[str]
     added_dhrm: DoubleNullableUomValue = Field(alias="addedDHRM")
-    weight_pull_avg: DoubleNullableUomValue
+    weight_pull_avg: DoubleNullableUomValue = Field(alias="weightPullAverage")
     weight_pull_min: DoubleNullableUomValue
     weight_pull_max: DoubleNullableUomValue
-    weight_push_avg: DoubleNullableUomValue
+    weight_push_avg: DoubleNullableUomValue = Field(alias="weightPushAverage")
     weight_push_min: DoubleNullableUomValue
     weight_push_max: DoubleNullableUomValue
     speed_pooh_avg: DoubleNullableUomValue = Field(alias="speedPOOHAverage")
@@ -97,14 +99,30 @@ class JobHistory(IDEXAuditLite):
 
 
 class ScheduledJob(IDEXAuditLite):
+    id: str
     name: Optional[str]
     job_plan: Optional[str]
     customer: Optional[str]
-    customer_id: Optional[UUID]
+    customer_id: Optional[str]
     well_name: Optional[str]
-    well_id: Optional[UUID]
+    well_id: Optional[str]
     wellbore_name: Optional[str]
-    wellbore_id: Optional[UUID]
+    wellbore_id: Optional[str]
     well_time_zone: Optional[str]
     start_time: Optional[datetime]
     end_time: Optional[datetime]
+
+
+class UnitActiveWellbore(IDEXAudit):
+    id: str
+    unit_id: str
+    wellbore_id: str
+
+
+class WellboreHistory(IDEXAudit):
+    id: str
+    unit_id: Optional[str]
+    wellbore_id: Optional[str]
+    start: datetime
+    end: Optional[datetime]
+    log_ids: Optional[list[str]]

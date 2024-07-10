@@ -1,8 +1,9 @@
-from pydantic import Field
-from ..base import IDEX, IDEXAuditLite, DoubleNullableUomValue
-from uuid import UUID
 from datetime import datetime
 from typing import Optional
+
+from pydantic import Field
+
+from ..base import IDEX, DoubleNullableUomValue, IDEXAuditLite
 
 
 class SoeSensorValues(IDEX):
@@ -21,7 +22,8 @@ class SoeSensorValues(IDEX):
 class SoeActivity(IDEXAuditLite):
     """Describes an Activity in a SoeTask."""
 
-    task_id: UUID
+    id: str
+    task_id: str
     name: Optional[str]
     type: Optional[str]
     start: Optional[datetime]
@@ -34,7 +36,8 @@ class SoeActivity(IDEXAuditLite):
 class SoeTask(IDEXAuditLite):
     """Describes a SoeTask for a given Job."""
 
-    job_id: UUID
+    id: str
+    job_id: str
     name: Optional[str]
     conveyance_type: Optional[str]
     activities_count: int
@@ -52,19 +55,21 @@ class SoeTask(IDEXAuditLite):
 class SoeChemicalMeasurement(IDEX):
     """Describes a chemical measurement for an Activity."""
 
-    id: UUID
-    job_id: UUID
+    id: str
+    job_id: str
     date: datetime
     type: Optional[str]
     value: float
     uom: Optional[str]
     comment: Optional[str]
+    wellbore_id: Optional[str] = Field(default=None)  # Not part of the payload - added separately
 
 
 class SoeJob(IDEXAuditLite):
     """Describes a Sequence of Events (Soe) Job."""
 
-    wellbore_id: UUID
+    id: str
+    wellbore_id: str
     name: Optional[str]
     start: Optional[datetime]
     end: Optional[datetime]

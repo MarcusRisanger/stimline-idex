@@ -34,7 +34,7 @@ class JwtAuth:
 
     @property
     def auth_request_payload(self) -> str:
-        return AuthenticateRequest(
+        return AuthenticateRequest.model_construct(
             username=self.username,
             password=self.password,
         ).model_dump_json()
@@ -42,7 +42,9 @@ class JwtAuth:
     @property
     def refresh_request_payload(self) -> str:
         assert self.auth is not None
-        return RefreshTokenRequest(refresh_token=self.auth.refresh_token).model_dump_json()
+        return RefreshTokenRequest.model_construct(
+            refresh_token=self.auth.refresh_token,
+        ).model_dump_json()
 
     def _acquire_token(self, base_url: str) -> AuthenticateResponse:
         """For acquiring a new token."""
