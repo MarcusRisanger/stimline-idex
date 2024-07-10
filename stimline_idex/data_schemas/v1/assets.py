@@ -5,7 +5,7 @@ from typing import Optional
 
 from pydantic import Field as PField
 
-from .base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite
+from .base import IDEX, DoubleNullableUomValue, IDEXAudit, IDEXAuditLite, TimeRange
 
 
 class Wellbore(IDEXAudit):
@@ -192,3 +192,16 @@ class Coil(IDEX):
     retire_comment: Optional[str]
     disposition: Optional[str]
     is_retired: bool
+
+
+class Channel(IDEXAudit):
+    id: str
+    name: Optional[str]
+    global_name: Optional[str]
+    description: Optional[str]
+    uom: Optional[str]
+    uom_class: Optional[str]
+    data_type: Optional[str]
+    index_type: Optional[str]
+    status: Optional[str]
+    range: TimeRange
