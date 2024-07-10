@@ -37,4 +37,10 @@ class IDEXApi:
         return self._send_request(method="GET", url=url, **kwargs)
 
     def post(self, *, url: str, **kwargs: Any) -> Response:
-        return self._send_request(method="POST", url=url, **kwargs)
+        if "headers" in kwargs:
+            headers = kwargs.pop("headers")
+            headers["Content-Type"] = "application/json"
+            headers["Accept"] = "application/json"
+        else:
+            headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        return self._send_request(method="POST", url=url, headers=headers, **kwargs)

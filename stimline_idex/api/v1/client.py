@@ -16,6 +16,7 @@ from .modules import (
     Tests,
     UnitActiveWellbores,
     Units,
+    Uoms,
     Wellbores,
     Wells,
 )
@@ -39,5 +40,6 @@ class IDEXClient:
         self.tests = Tests(api=self._api)
         self.unit_active_wellbores = UnitActiveWellbores(api=self._api)
         self.units = Units(api=self._api)
+        self.uoms = Uoms(api=self._api)
         self.wells = Wells(api=self._api)
         self.wellbores = Wellbores(api=self._api)

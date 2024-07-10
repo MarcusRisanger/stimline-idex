@@ -9,6 +9,7 @@ from .surveys import Surveys
 from .tests import Tests
 from .unit_active_wellbore import UnitActiveWellbores
 from .units import Units
+from .uoms import Uoms
 from .wellbores import Wellbores
 from .wells import Wells
 
@@ -24,6 +25,7 @@ __all__ = [
     "Tests",
     "UnitActiveWellbores",
     "Units",
+    "Uoms",
     "Wells",
     "Wellbores",
 ]
