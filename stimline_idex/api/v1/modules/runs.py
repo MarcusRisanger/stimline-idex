@@ -2,7 +2,7 @@ import logging
 from typing import Any, Optional, overload
 
 from ....data_schemas.v1.assets import Unit, Wellbore
-from ....data_schemas.v1.events.events import Run
+from ....data_schemas.v1.events import Run
 from ..api import IDEXApi
 from .text_utils import url_encode_id
 
@@ -23,11 +23,11 @@ class Runs:
     def get(
         self,
         *,
-        filter: str,
-        select: list[str],
-        top: int,
-        skip: int,
-        order_by: str,
+        filter: Optional[str] = None,
+        select: Optional[list[str]] = None,
+        top: Optional[int] = None,
+        skip: Optional[int] = None,
+        order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
     ) -> list[Run]: ...
 

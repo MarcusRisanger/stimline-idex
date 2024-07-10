@@ -157,3 +157,38 @@ class OpenHole(IDEX):
     md_bottom: DoubleNullableUomValue
     abs_roughness: DoubleNullableUomValue
     comment: Optional[str]
+
+
+class Coil(IDEX):
+    id: str
+    name: Optional[str]
+    reel_id: Optional[str]
+    reel_name: Optional[str]
+    manufacturer: Optional[str]
+    grade: Optional[str]
+    unit_id: Optional[str]
+    unit_name: Optional[str]
+    comment: Optional[str]
+    current_length: float
+    original_length: float
+    outer_diameter: float
+    avg_fatigue: Optional[float] = PField(alias="averageFatigue")
+    max_fatigue: float = PField(alias="maximumFatigue")
+    max_fatigue_position: float = PField(alias="maximumFatiguePosition")
+    fatigue_limit_warning: Optional[float] = PField(alias="fatigueLimitWarn")
+    fatigue_limit_alarm: Optional[float]
+    footage: Optional[float]
+    date_manufactured: Optional[datetime]
+    date_in_service: Optional[datetime]
+    location_id: Optional[str]
+    location_name: Optional[str]
+    last_used: Optional[datetime]
+    status: Optional[str]
+    last_reel_id: Optional[str]
+    last_reel_name: Optional[str]
+    last_unit_id: Optional[str]
+    last_unit_name: Optional[str]
+    retire_reason: Optional[str]
+    retire_comment: Optional[str]
+    disposition: Optional[str]
+    is_retired: bool

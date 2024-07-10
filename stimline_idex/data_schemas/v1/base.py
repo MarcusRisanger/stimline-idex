@@ -13,7 +13,7 @@ def to_camel(string: str) -> str:
 class IDEX(BaseModel):
     """Base class for all IDEX data models."""
 
-    model_config = ConfigDict(alias_generator=to_camel)
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
     ...
 
@@ -29,21 +29,6 @@ class IDEXAudit(IDEXAuditLite):
     """For subclasses with API audit fields incl. deleted date."""
 
     deleted_date: Optional[datetime] = Field(default=None)
-
-
-class Range(IDEX):
-    """Describes a Range."""
-
-    id: str
-    start: datetime
-    end: datetime
-
-
-class TimeRange(IDEX):
-    """Describes a Time Range."""
-
-    start: datetime
-    end: datetime
 
 
 class TimeDuration(IDEX):

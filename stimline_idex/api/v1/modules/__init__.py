@@ -1,3 +1,6 @@
+from .change_logs import ChangeLogs
+from .channels import Channels
+from .coils import Coils
 from .customers import Customers
 from .fields import Fields
 from .installations import Installations
@@ -16,6 +19,9 @@ from .wellbores import Wellbores
 from .wells import Wells
 
 __all__ = [
+    "ChangeLogs",
+    "Channels",
+    "Coils",
     "Customers",
     "Fields",
     "Installations",

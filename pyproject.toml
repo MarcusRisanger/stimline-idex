@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stimline-idex"
-version = "0.1.0"
+version = "0.2.0"
 description = "API Wrapper for the Stimline IDEX collaboration platform software used for well intervention."
 authors = ["Marcus Risanger <69350948+MarcusRisanger@users.noreply.github.com>"]
 readme = "README.md"
@@ -16,6 +16,7 @@ ipykernel = "^6.29.5"
 ruff = "^0.5.1"
 types-requests = "^2.32.0.20240622"
 mypy = "^1.10.1"
+msgpack = "^1.0.8"
 
 [build-system]
 requires = ["poetry-core"]
