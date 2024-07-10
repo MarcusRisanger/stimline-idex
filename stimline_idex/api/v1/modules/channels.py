@@ -3,7 +3,13 @@ from datetime import datetime
 from typing import Optional, overload
 
 from ....data_schemas.v1.assets import Log
-from ....data_schemas.v1.channel_data import Channel, ChannelDataRequest, ChannelDataResponse, Range
+from ....data_schemas.v1.channel_data import (
+    Channel,
+    ChannelDataRangeRequest,
+    ChannelDataRequest,
+    ChannelDataResponse,
+    ChannelRange,
+)
 from ....data_schemas.v1.events import Run
 from ..api import IDEXApi
 from .text_utils import url_encode_id
@@ -91,18 +97,18 @@ class Channels:
         return [rec for rec in records if rec.deleted_date is None]
 
     @overload
-    def get_available_ranges(self, *, channels: list[Channel]) -> list[Range]: ...
+    def get_available_ranges(self, *, channels: list[Channel]) -> list[ChannelRange]: ...
     @overload
-    def get_available_ranges(self, *, channel_ids: list[str]) -> list[Range]: ...
+    def get_available_ranges(self, *, channel_ids: list[str]) -> list[ChannelRange]: ...
 
     def get_available_ranges(
         self,
         *,
         channels: Optional[list[Channel]] = None,
         channel_ids: Optional[list[str]] = None,
-    ) -> list[Range]:
+    ) -> list[ChannelRange]:
         """
-        Get `Range` object(s).
+        Get `ChannelRange` object(s).
 
         Parameters
         ----------
@@ -113,8 +119,8 @@ class Channels:
 
         Returns
         -------
-        list[Range]
-            The `Range` object(s).
+        list[ChannelRange]
+            The `ChannelRange` object(s).
 
         """
         if channels is not None:
@@ -131,7 +137,7 @@ class Channels:
         if data.status_code == 204:
             return []
 
-        return [Range.model_validate(row) for row in data.json()]
+        return [ChannelRange.model_validate(row) for row in data.json()]
 
     @overload
     def get_data_range(
@@ -209,3 +215,96 @@ class Channels:
             return []
 
         return [ChannelDataResponse.model_validate(row) for row in data.json()]
+
+    def get_channel_datapoints(
+        self,
+        *,
+        channel_ranges: list[ChannelRange],
+        limit: int,
+        ignore_unknown_ids: bool = True,
+        include_outside_pts: bool = True,
+    ) -> bytes:
+        """
+        Get `ChannelDataResponse` object(s).
+
+        Parameters
+        ----------
+        channels : list[ChannelRange]
+            Channel objects to get Ranges for.
+        limit : int
+            The limit of datapoints to retrieve per channel.
+        ignore_unknown_ids : bool = True
+            Ignore unknown channel IDs.
+        include_outside_pts : bool = True
+            Include outside points.
+
+
+        Returns
+        -------
+        list[ChannelDataResponse]
+            The `ChannelDataResponse` object(s).
+
+        """
+        payload = ChannelDataRangeRequest(
+            channels=channel_ranges,
+            limit=limit,
+            ignore_unknown_ids=ignore_unknown_ids,
+            include_outside_points=include_outside_pts,
+        )
+
+        data = self._api.post(
+            url="ChannelData/GetChannelDataRange",
+            data=payload.model_dump_json(by_alias=True),
+        )
+
+        if data.status_code == 204:
+            return b""
+
+        return data.content
+
+    def get_compressed_channel_datapoints(
+        self,
+        *,
+        channel_ranges: list[ChannelRange],
+        limit: int,
+        ignore_unknown_ids: bool = True,
+        include_outside_pts: bool = True,
+    ) -> bytes:
+        """
+        Get `ChannelDataResponse` object(s).
+
+        Parameters
+        ----------
+        channels : list[ChannelRange]
+            Channel objects to get Ranges for.
+        limit : int
+            The limit of datapoints to retrieve per channel.
+        ignore_unknown_ids : bool = True
+            Ignore unknown channel IDs.
+        include_outside_pts : bool = True
+            Include outside points.
+
+
+        Returns
+        -------
+        list[ChannelDataResponse]
+            The `ChannelDataResponse` object(s).
+
+        """
+        payload = ChannelDataRangeRequest(
+            channels=channel_ranges,
+            limit=limit,
+            ignore_unknown_ids=ignore_unknown_ids,
+            include_outside_points=include_outside_pts,
+        )
+
+        data = self._api.post(
+            url="ChannelData/GetCompressedChannelDataRange",
+            data=payload.model_dump_json(by_alias=True),
+            headers={"Accept": "application/octet-stream"},
+        )
+
+        if data.status_code == 204:
+            return b""
+
+        return data.content

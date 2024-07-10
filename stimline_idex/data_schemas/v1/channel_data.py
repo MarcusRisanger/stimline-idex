@@ -6,7 +6,7 @@ from pydantic import Field, field_validator
 from .base import IDEX, IDEXAudit
 
 
-class Range(IDEX):
+class ChannelRange(IDEX):
     """Describes a Range."""
 
     channel_id: str = Field(alias="id")
@@ -51,7 +51,7 @@ class ChannelDataRequest(_DataRequest):
 
 
 class ChannelDataRangeRequest(_DataRequest):
-    channels: list[Range]
+    channels: list[ChannelRange]
 
 
 class Channel(IDEXAudit):

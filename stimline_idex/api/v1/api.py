@@ -39,8 +39,13 @@ class IDEXApi:
     def post(self, *, url: str, **kwargs: Any) -> Response:
         if "headers" in kwargs:
             headers = kwargs.pop("headers")
-            headers["Content-Type"] = "application/json"
-            headers["Accept"] = "application/json"
+            if "Content-Type" not in headers:
+                headers["Content-Type"] = "application/json"
+            if "Accept" not in headers:
+                headers["Accept"] = "application/json"
         else:
             headers = {"Content-Type": "application/json", "Accept": "application/json"}
+
+        print(headers)
+        print(kwargs.get("data"))
         return self._send_request(method="POST", url=url, headers=headers, **kwargs)
