@@ -1,4 +1,4 @@
-from .events import JobHistory, Maintenance, ScheduledJob, Survey, SurveyStation, UnitActiveWellbore
+from .events import JobHistory, Maintenance, ScheduledJob, Survey, SurveyStation, UnitActiveWellbore, WellboreHistory
 from .soe import SoeActivity, SoeChemicalMeasurement, SoeJob, SoeSensorValues, SoeTask
 from .tests import (
     AsvLeakRateTest,
@@ -18,6 +18,7 @@ __all__ = [
     "Survey",
     "SurveyStation",
     "UnitActiveWellbore",
+    "WellboreHistory",
     # Soe
     "SoeActivity",
     "SoeChemicalMeasurement",

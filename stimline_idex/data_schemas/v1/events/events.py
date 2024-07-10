@@ -117,3 +117,12 @@ class UnitActiveWellbore(IDEXAudit):
     id: str
     unit_id: str
     wellbore_id: str
+
+
+class WellboreHistory(IDEXAudit):
+    id: str
+    unit_id: Optional[str]
+    wellbore_id: Optional[str]
+    start: datetime
+    end: Optional[datetime]
+    log_ids: Optional[list[str]]

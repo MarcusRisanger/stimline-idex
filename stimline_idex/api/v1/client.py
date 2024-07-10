@@ -17,6 +17,7 @@ from .modules import (
     UnitActiveWellbores,
     Units,
     Uoms,
+    WellboreHistories,
     WellboreLiveStatuses,
     Wellbores,
     Wells,
@@ -42,6 +43,7 @@ class IDEXClient:
         self.unit_active_wellbores = UnitActiveWellbores(api=self._api)
         self.units = Units(api=self._api)
         self.uoms = Uoms(api=self._api)
+        self.wellbore_histories = WellboreHistories(api=self._api)
         self.wellbore_live_statuses = WellboreLiveStatuses(api=self._api)
         self.wells = Wells(api=self._api)
         self.wellbores = Wellbores(api=self._api)

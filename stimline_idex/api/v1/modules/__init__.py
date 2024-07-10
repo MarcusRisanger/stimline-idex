@@ -10,6 +10,7 @@ from .tests import Tests
 from .unit_active_wellbore import UnitActiveWellbores
 from .units import Units
 from .uoms import Uoms
+from .wellbore_history import WellboreHistories
 from .wellbore_live_status import WellboreLiveStatuses
 from .wellbores import Wellbores
 from .wells import Wells
@@ -27,6 +28,7 @@ __all__ = [
     "UnitActiveWellbores",
     "Units",
     "Uoms",
+    "WellboreHistories",
     "WellboreLiveStatuses",
     "Wellbores",
     "Wells",
