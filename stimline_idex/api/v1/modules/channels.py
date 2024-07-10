@@ -187,14 +187,15 @@ class Channels:
         include_outside_pts : bool = True
             Include outside points.
 
+
         Returns
         -------
         list[ChannelDataResponse]
             The `ChannelDataResponse` object(s).
 
         """
-        payload = ChannelDataRequest.model_construct(
-            ids=[channel.id for channel in channels] if channels is not None else channel_ids,
+        payload = ChannelDataRequest(
+            ids=[channel.id for channel in channels] if channels is not None else channel_ids,  # type: ignore
             start=start_time,
             end=end_time,
             limit=limit,

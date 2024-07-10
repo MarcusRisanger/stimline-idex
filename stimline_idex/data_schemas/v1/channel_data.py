@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Optional
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from .base import IDEX, IDEXAudit
 
@@ -31,13 +31,27 @@ class ChannelDataResponse(IDEX):
     points: Optional[list[DataPoint]]
 
 
-class ChannelDataRequest(IDEX):
-    ids: list[str]
-    start: Optional[datetime]
-    end: Optional[datetime]
+class _DataRequest(IDEX):
     limit: int
     ignore_unknown_ids: bool
     include_outside_points: bool
+
+    @field_validator("limit")
+    @classmethod
+    def check_is_positive(cls, value: int):
+        if int(value) <= 0:
+            raise ValueError("limit must be positive")
+        return value
+
+
+class ChannelDataRequest(_DataRequest):
+    ids: list[str]
+    start: Optional[datetime]
+    end: Optional[datetime]
+
+
+class ChannelDataRangeRequest(_DataRequest):
+    channels: list[Range]
 
 
 class Channel(IDEXAudit):

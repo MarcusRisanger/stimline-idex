@@ -13,7 +13,7 @@ def to_camel(string: str) -> str:
 class IDEX(BaseModel):
     """Base class for all IDEX data models."""
 
-    model_config = ConfigDict(alias_generator=to_camel)
+    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
     ...
 
