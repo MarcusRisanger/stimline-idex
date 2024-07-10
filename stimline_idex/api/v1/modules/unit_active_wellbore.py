@@ -36,22 +36,14 @@ class UnitActiveWellbores:
 
         Parameters
         ----------
-        id : Optional[str]
-            Well to retrieve.
-        well : Optional[Well]
-            Well object to get UnitActiveWellbore for.
-        well_id : Optional[str]
-            Well ID to get UnitActiveWellbore for.
-        filter : Optional[str]
-            OData filter string.
-        select : list[str] | None
-            Provide a list of columns to retrieve from output.
-        top : Optional[int]
-            Limit the number of results returned.
-        skip : Optional[int]
-            Skip the first N results.
-        order_by : Optional[str]
-            Order the results by columns.
+        unit : Optional[Unit]
+            Unit object to get UnitActiveWellbore for.
+        unit_id : Optional[str]
+            Unit ID to get UnitActiveWellbore for.
+        wellbore : Optional[Wellbore]
+            Wellbore object to get UnitActiveWellbore for.
+        wellbore_id : Optional[str]
+            Wellbore ID to get UnitActiveWellbore for.
         include_soft_delete : Optional[bool] = False
             Include soft deleted records.
 
