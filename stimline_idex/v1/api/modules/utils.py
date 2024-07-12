@@ -116,3 +116,9 @@ def _get_filter(**kwargs: dict[str, Any]) -> tuple[dict[str, Any], str]:
 
     logger.debug("Query setting `filter`: '%s'", filter)
     return kwargs, filter  # type: ignore
+
+
+def log_unused_kwargs(**kwargs: Any):
+    """Log any unused kwargs."""
+    unused = kwargs.keys()
+    logger.debug("Found unused kwargs: %s", ",".join(unused))

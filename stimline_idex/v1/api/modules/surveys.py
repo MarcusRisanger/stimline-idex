@@ -3,6 +3,7 @@ from typing import Any, Optional, overload
 from ....logging import logger
 from ....v1.data_schemas import Survey, SurveyStation, Wellbore
 from ..api import IDEXApi
+from .utils import create_params, log_unused_kwargs
 
 
 class Surveys:
@@ -26,15 +27,7 @@ class Surveys:
     def get(self, *, wellbore_id: str) -> list[Survey]: ...
 
     def get(
-        self,
-        *,
-        wellbore: Optional[Wellbore] = None,
-        wellbore_id: Optional[str] = None,
-        filter: Optional[str] = None,
-        select: Optional[list[str]] = None,
-        top: Optional[int] = None,
-        skip: Optional[int] = None,
-        order_by: Optional[str] = None,
+        self, *, wellbore: Optional[Wellbore] = None, wellbore_id: Optional[str] = None, **kwargs: Any
     ) -> list[Survey]:
         """
         Get `Survey` objects.
@@ -74,17 +67,8 @@ class Surveys:
 
         else:
             # Get all surveys matching filters
-            params: dict[str, Any] = {}
-            if filter is not None:
-                params["$filter"] = filter
-            if select is not None:
-                params["$select"] = ",".join(select)
-            if top is not None:
-                params["$top"] = top
-            if skip is not None:
-                params["$skip"] = skip
-            if order_by is not None:
-                params["$orderby"] = order_by
+            kwargs, params = create_params(**kwargs)
+            log_unused_kwargs(**kwargs)
 
             data = self._api.get(url="Surveys", params=params)
 

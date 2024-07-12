@@ -3,6 +3,7 @@ from typing import Any, Optional, Union, overload
 from ....logging import logger
 from ....v1.data_schemas import JobHistory, Maintenance, Reel, ScheduledJob
 from ..api import IDEXApi
+from .utils import create_params, log_unused_kwargs
 
 
 class Reels:
@@ -22,15 +23,7 @@ class Reels:
         order_by: Optional[str] = None,
     ) -> list[Reel]: ...
 
-    def get(
-        self,
-        id: Optional[str] = None,
-        filter: Optional[str] = None,
-        select: Optional[list[str]] = None,
-        top: Optional[int] = None,
-        skip: Optional[int] = None,
-        order_by: Optional[str] = None,
-    ) -> Union[Reel, list[Reel]]:
+    def get(self, id: Optional[str] = None, **kwargs: Any) -> Union[Reel, list[Reel]]:
         """
         Get `Reel` object(s).
 
@@ -60,18 +53,8 @@ class Reels:
             data = self._api.get(url=f"Reels/{id}")
             return Reel.model_validate(data.json())
 
-        params: dict[str, Any] = {}
-        if filter is not None:
-            params["$filter"] = filter
-        if select is not None:
-            select = self._check_select(select)
-            params["$select"] = ",".join(select)
-        if top is not None:
-            params["$top"] = top
-        if skip is not None:
-            params["$skip"] = skip
-        if order_by is not None:
-            params["$orderby"] = order_by
+        kwargs, params = create_params(**kwargs)
+        log_unused_kwargs(**kwargs)
 
         data = self._api.get(url="Reels", params=params)
 

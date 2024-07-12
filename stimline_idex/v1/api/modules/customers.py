@@ -3,6 +3,7 @@ from typing import Any, Optional, Union, overload
 from ....logging import logger
 from ....v1.data_schemas import Customer
 from ..api import IDEXApi
+from .utils import create_params, log_unused_kwargs
 
 
 class Customers:
@@ -26,12 +27,7 @@ class Customers:
     def get(
         self,
         id: Optional[str] = None,
-        filter: Optional[str] = None,
-        select: Optional[list[str]] = None,
-        top: Optional[int] = None,
-        skip: Optional[int] = None,
-        order_by: Optional[str] = None,
-        include_soft_delete: Optional[bool] = False,
+        **kwargs: Any,
     ) -> Union[Customer, list[Customer]]:
         """
         Get `Customer` object(s).
@@ -64,40 +60,13 @@ class Customers:
             data = self._api.get(url=f"Customers/{id}")
             return Customer.model_validate(data.json())
 
-        params: dict[str, Any] = {}
-        if filter is not None:
-            params["$filter"] = filter
-        if select is not None:
-            select = self._check_select(select)
-            params["$select"] = ",".join(select)
-        if top is not None:
-            params["$top"] = top
-        if skip is not None:
-            params["$skip"] = skip
-        if order_by is not None:
-            params["$orderby"] = order_by
-
-        if top is not None and include_soft_delete is False:
-            logger.warning(
-                "Top parameter is set, but include_soft_delete is False. "
-                + "This may result in too few records being retrieved."
-            )
+        kwargs, params = create_params(**kwargs)
+        log_unused_kwargs(**kwargs)
 
         data = self._api.get(url="Customers", params=params)
 
         if data.status_code == 204:
+            logger.debug("No Customers found.")
             return []
 
-        customers = [Customer.model_validate(row) for row in data.json()]
-
-        if include_soft_delete:
-            return customers
-
-        return [customer for customer in customers if customer.deleted_date is None]
-
-    def _check_select(self, select: list[str]) -> list[str]:
-        important_fields = ["id"]
-        for field in important_fields:
-            if field not in select:
-                select.append(field)
-        return select
+        return [Customer.model_validate(row) for row in data.json()]
