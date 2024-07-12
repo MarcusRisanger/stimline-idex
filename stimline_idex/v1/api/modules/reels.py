@@ -1,8 +1,7 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from ....v1.data_schemas.assets import Reel
-from ....v1.data_schemas.events import JobHistory, Maintenance, ScheduledJob
+from ....v1.data_schemas import JobHistory, Maintenance, Reel, ScheduledJob
 from ..api import IDEXApi
 
 

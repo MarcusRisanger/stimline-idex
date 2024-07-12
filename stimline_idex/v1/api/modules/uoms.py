@@ -1,6 +1,7 @@
 from typing import Any
 
-from ....v1.data_schemas.uoms import UnitType, Uom, UomConversionRequest, UomConversionResponse
+from ....v1.data_schemas import UnitType, Uom
+from ....v1.data_schemas.uoms import UomConversionRequest, UomConversionResponse
 from ..api import IDEXApi
 
 

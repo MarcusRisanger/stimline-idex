@@ -1,6 +1,6 @@
 from typing import Literal
 
-from ....v1.data_schemas.events import (
+from ....v1.data_schemas import (
     AsvLeakRateTest,
     BuildUpTest,
     Inflow30MinTest,

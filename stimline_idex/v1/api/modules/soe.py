@@ -1,12 +1,12 @@
 import logging
 from typing import Optional, overload
 
-from ....v1.data_schemas.assets import Wellbore
-from ....v1.data_schemas.events import (
+from ....v1.data_schemas import (
     SoeActivity,
     SoeChemicalMeasurement,
     SoeJob,
     SoeTask,
+    Wellbore,
 )
 from ..api import IDEXApi
 

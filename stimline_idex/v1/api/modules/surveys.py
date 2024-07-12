@@ -1,8 +1,7 @@
 import logging
 from typing import Any, Optional, overload
 
-from ....v1.data_schemas.assets import Wellbore
-from ....v1.data_schemas.events import Survey, SurveyStation
+from ....v1.data_schemas import Survey, SurveyStation, Wellbore
 from ..api import IDEXApi
 
 

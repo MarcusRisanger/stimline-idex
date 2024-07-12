@@ -1,7 +1,7 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from ....v1.data_schemas.assets import Field
+from ....v1.data_schemas import Field
 from ..api import IDEXApi
 
 
