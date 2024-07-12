@@ -23,16 +23,16 @@ class Run(IDEXAudit):
     """Describes a run."""
 
     id: str
-    name: Optional[str]
-    start_time: datetime
-    end_time: Optional[datetime]
-    status: str  # Enum but docs doesn't specify
-    run_task: Optional[str]
-    job_type: Optional[str]
-    unit_id: Optional[str]
-    hidden: bool
-    wellbore_id: str
-    log_ids: list[str]
+    name: Optional[str] = Field(default=None)
+    start_time: Optional[datetime] = Field(default=None)
+    end_time: Optional[datetime] = Field(default=None)
+    status: Optional[str] = Field(default=None)
+    run_task: Optional[str] = Field(default=None)
+    job_type: Optional[str] = Field(default=None)
+    unit_id: Optional[str] = Field(default=None)
+    hidden: Optional[bool] = Field(default=None)
+    wellbore_id: Optional[str] = Field(default=None)
+    log_ids: Optional[list[str]] = Field(default=None)
     work_order_number: Optional[str] = Field(default=None)
 
 
@@ -54,18 +54,18 @@ class Survey(IDEX):
     """Describes a wellbore survey."""
 
     id: str
-    name: Optional[str]
-    wellbore_id: str
-    md_uom: Optional[str]
-    tvd_uom: Optional[str]
-    inc_uom: Optional[str]
-    azi_uom: Optional[str]
-    dls_uom: Optional[str]
-    vert_sect_uom: Optional[str]
-    disp_ns_uom: Optional[str]
-    disp_ew_uom: Optional[str]
-    audit: IDEXAudit
-    stations: list[SurveyStation]
+    name: Optional[str] = Field(default=None)
+    wellbore_id: Optional[str] = Field(default=None)
+    md_uom: Optional[str] = Field(default=None)
+    tvd_uom: Optional[str] = Field(default=None)
+    inc_uom: Optional[str] = Field(default=None)
+    azi_uom: Optional[str] = Field(default=None)
+    dls_uom: Optional[str] = Field(default=None)
+    vert_sect_uom: Optional[str] = Field(default=None)
+    disp_ns_uom: Optional[str] = Field(default=None)
+    disp_ew_uom: Optional[str] = Field(default=None)
+    audit: Optional[IDEXAudit] = Field(default=None)
+    stations: list[SurveyStation] = Field(default=None)
 
 
 class JobHistory(IDEXAuditLite):
