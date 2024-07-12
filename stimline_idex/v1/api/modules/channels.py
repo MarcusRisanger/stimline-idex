@@ -1,7 +1,7 @@
-import logging
 from datetime import datetime
 from typing import Optional, overload
 
+from ....logging import logger
 from ....v1.data_schemas import (
     Channel,
     ChannelDataRangeRequest,
@@ -64,14 +64,14 @@ class Channels:
         if log is not None or log_id is not None:
             log_id_ = log_id if log is None else log.id
             assert log_id_ is not None
-            logging.debug(f"Getting Channels for Log with ID: {id}")
+            logger.debug(f"Getting Channels for Log with ID: {id}")
             log_id_ = url_encode_id(log_id_)
             data = self._api.get(url=f"Logs/{log_id_}/Channels")
 
         elif run is not None or run_id is not None:
             run_id_ = run_id if run is None else run.id
             assert run_id_ is not None
-            logging.debug(f"Getting Channels for Run with ID: {id}")
+            logger.debug(f"Getting Channels for Run with ID: {id}")
             run_id_ = url_encode_id(run_id_)
             data = self._api.get(url=f"Runs/{run_id_}/Channels")
 
@@ -130,7 +130,7 @@ class Channels:
         else:
             raise TypeError("Either `channels` or `channel_ids` must be provided.")
 
-        logging.debug(f"Getting available ranges for Channels with IDs: {', '.join(ids)}.")
+        logger.debug(f"Getting available ranges for Channels with IDs: {', '.join(ids)}.")
 
         data = self._api.post(url="ChannelData/AvailableRanges", json=ids)
 

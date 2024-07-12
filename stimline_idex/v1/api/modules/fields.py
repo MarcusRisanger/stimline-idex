@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, Union, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Field
 from ..api import IDEXApi
 
@@ -60,7 +60,7 @@ class Fields:
 
         """
         if id is not None:
-            logging.debug(f"Getting Field with ID: {id}")
+            logger.debug(f"Getting Field with ID: {id}")
             data = self._api.get(url=f"Fields/{id}")
             return Field.model_validate(data.json())
 

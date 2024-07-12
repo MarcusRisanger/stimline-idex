@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, Union, overload
 
+from ....logging import logger
 from ....v1.data_schemas import JobHistory, Maintenance, Reel, ScheduledJob
 from ..api import IDEXApi
 
@@ -56,7 +56,7 @@ class Reels:
 
         """
         if id is not None:
-            logging.debug(f"Getting Reel with ID: {id}")
+            logger.debug(f"Getting Reel with ID: {id}")
             data = self._api.get(url=f"Reels/{id}")
             return Reel.model_validate(data.json())
 
@@ -95,7 +95,7 @@ class Reels:
         else:
             raise ValueError("Invalid input. Must provide either a Reel object or a reel_id.")
 
-        logging.debug(f"Getting Maintenances for Reel with ID: {id}")
+        logger.debug(f"Getting Maintenances for Reel with ID: {id}")
         data = self._api.get(url=f"Reels/{id}/Maintenances")
         if data.status_code == 204:
             return []
@@ -110,7 +110,7 @@ class Reels:
         else:
             raise ValueError("Invalid input. Must provide either a Reel object or a reel_id.")
 
-        logging.debug(f"Getting JobHistory for Reel with ID: {id}")
+        logger.debug(f"Getting JobHistory for Reel with ID: {id}")
         data = self._api.get(url=f"Reels/{id}/JobHistory")
         if data.status_code == 204:
             return []
@@ -125,7 +125,7 @@ class Reels:
         else:
             raise ValueError("Invalid input. Must provide either a Reel object or a reel_id.")
 
-        logging.debug(f"Getting ScheduledJobs for Reel with ID: {id}")
+        logger.debug(f"Getting ScheduledJobs for Reel with ID: {id}")
         data = self._api.get(url=f"Reels/{id}/ScheduledJobs")
         if data.status_code == 204:
             return []

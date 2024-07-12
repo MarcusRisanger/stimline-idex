@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, Union, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Field as Installation
 from ..api import IDEXApi
 
@@ -60,7 +60,7 @@ class Installations:
 
         """
         if id is not None:
-            logging.debug(f"Getting Installation with ID: {id}")
+            logger.debug(f"Getting Installation with ID: {id}")
             data = self._api.get(url=f"Installations/{id}")
             return Installation.model_validate(data.json())
 

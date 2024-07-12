@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Survey, SurveyStation, Wellbore
 from ..api import IDEXApi
 
@@ -64,12 +64,12 @@ class Surveys:
         """
         if wellbore is not None:
             # Get for singular wellbore
-            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore.id}")
+            logger.debug(f"Getting Surveys for Wellbore with ID: {wellbore.id}")
             data = self._api.get(url=f"Wellbores/{wellbore.id}/Surveys")
 
         elif wellbore_id is not None:
             # Get for singular wellbore
-            logging.debug(f"Getting Surveys for Wellbore with ID: {wellbore_id}")
+            logger.debug(f"Getting Surveys for Wellbore with ID: {wellbore_id}")
             data = self._api.get(url=f"Wellbores/{wellbore_id}/Surveys")
 
         else:

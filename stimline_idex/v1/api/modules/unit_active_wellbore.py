@@ -1,6 +1,6 @@
-import logging
 from typing import Optional, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Unit, UnitActiveWellbore, Wellbore
 from ..api import IDEXApi
 from .text_utils import url_encode_id
@@ -55,14 +55,14 @@ class UnitActiveWellbores:
         if unit is not None or unit_id is not None:
             id = unit_id if unit is None else unit.id
             assert id is not None
-            logging.debug(f"Getting UnitActiveWellbores for Unit with ID: {id}")
+            logger.debug(f"Getting UnitActiveWellbores for Unit with ID: {id}")
             id = url_encode_id(id)
             data = self._api.get(url=f"UnitActiveWellbore/{id}")
 
         elif wellbore is not None or wellbore_id is not None:
             id = wellbore_id if wellbore is None else wellbore.id
             assert id is not None
-            logging.debug(f"Getting UnitActiveWellbores for Wellbore with ID: {id}")
+            logger.debug(f"Getting UnitActiveWellbores for Wellbore with ID: {id}")
             id = url_encode_id(id)
             data = self._api.get(url=f"UnitActiveWellbore/{id}")
 

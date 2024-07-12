@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, Union, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Customer
 from ..api import IDEXApi
 
@@ -60,7 +60,7 @@ class Customers:
 
         """
         if id is not None:
-            logging.debug(f"Getting Customer with ID: {id}")
+            logger.debug(f"Getting Customer with ID: {id}")
             data = self._api.get(url=f"Customers/{id}")
             return Customer.model_validate(data.json())
 

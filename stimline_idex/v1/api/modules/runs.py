@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Run, Unit, Wellbore
 from ..api import IDEXApi
 from .text_utils import url_encode_id
@@ -78,14 +78,14 @@ class Runs:
         if unit is not None or unit_id is not None:
             id = unit_id if unit is None else unit.id
             assert id is not None
-            logging.debug(f"Getting Runs for Unit with ID: {id}")
+            logger.debug(f"Getting Runs for Unit with ID: {id}")
             id = url_encode_id(id)
             data = self._api.get(url=f"Units/{id}/Runs")
 
         elif wellbore is not None or wellbore_id is not None:
             id = wellbore_id if wellbore is None else wellbore.id
             assert id is not None
-            logging.debug(f"Getting Runs for Wellbore with ID: {id}")
+            logger.debug(f"Getting Runs for Wellbore with ID: {id}")
             id = url_encode_id(id)
             data = self._api.get(url=f"Wellbores/{id}/Runs")
 
@@ -106,7 +106,7 @@ class Runs:
             data = self._api.get(url="Runs", params=params)
 
         if data.status_code == 204:
-            logging.debug("No Runs found.")
+            logger.debug("No Runs found.")
             return []
 
         runs = [Run.model_validate(row) for row in data.json()]

@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Optional, Union, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Well
 from ..api import IDEXApi
 
@@ -63,7 +63,7 @@ class Wells:
         """
         if id is not None:
             # Get singular well
-            logging.debug(f"Getting Well with ID: {id}")
+            logger.debug(f"Getting Well with ID: {id}")
             data = self._api.get(url=f"Wells/{id}")
             return Well.model_validate(data.json())
 

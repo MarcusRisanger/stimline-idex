@@ -1,6 +1,6 @@
-import logging
 from typing import Optional, Union, overload
 
+from ....logging import logger
 from ....v1.data_schemas import Log, Unit
 from ..api import IDEXApi
 from .text_utils import url_encode_id
@@ -43,15 +43,15 @@ class Logs:
 
         """
         if id is not None:
-            logging.debug(f"Getting Wellbore with ID: {id}")
+            logger.debug(f"Getting Wellbore with ID: {id}")
             data = self._api.get(url=f"Logs/{id}")
             return Log.model_validate(data.json())
 
         if unit is not None:
-            logging.debug(f"Getting Logs for Unit with ID: {unit.id}")
+            logger.debug(f"Getting Logs for Unit with ID: {unit.id}")
             id = url_encode_id(unit.id)
         elif unit_id is not None:
-            logging.debug(f"Getting Logs for Unit with ID: {unit_id}")
+            logger.debug(f"Getting Logs for Unit with ID: {unit_id}")
             id = url_encode_id(unit_id)
         else:
             raise ValueError("Either `unit` or `unit_id` must be provided.")

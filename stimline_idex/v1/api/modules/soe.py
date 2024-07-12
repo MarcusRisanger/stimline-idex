@@ -1,6 +1,6 @@
-import logging
 from typing import Optional, overload
 
+from ....logging import logger
 from ....v1.data_schemas import (
     SoeActivity,
     SoeChemicalMeasurement,
@@ -72,11 +72,11 @@ class Soe:
 
         """
         if wellbore is not None:
-            logging.debug(f"Getting Jobs for Wellbore with ID: {wellbore.id}")
+            logger.debug(f"Getting Jobs for Wellbore with ID: {wellbore.id}")
             return self._get_jobs(wellbore_id=wellbore.id)
 
         if wellbore_id is not None:
-            logging.debug(f"Getting Jobs for Wellbore with ID: {wellbore_id}")
+            logger.debug(f"Getting Jobs for Wellbore with ID: {wellbore_id}")
             return self._get_jobs(wellbore_id=wellbore_id)  # type: ignore
 
         raise ValueError("Either wellbore or wellbore_id must be provided.")
@@ -110,11 +110,11 @@ class Soe:
 
         """
         if job is not None:
-            logging.debug(f"Getting Tasks for Job ID: {job.id}")
+            logger.debug(f"Getting Tasks for Job ID: {job.id}")
             return self._get_tasks(wellbore_id=job.wellbore_id, job_id=job.id)
 
         if wellbore_id is not None and job_id is not None:
-            logging.debug(f"Getting Tasks for Job ID: {job_id}")
+            logger.debug(f"Getting Tasks for Job ID: {job_id}")
             return self._get_tasks(wellbore_id=wellbore_id, job_id=job_id)
 
         raise ValueError("Either job or wellbore_id and job_id must be provided.")
@@ -148,10 +148,10 @@ class Soe:
 
         """
         if job is not None:
-            logging.debug(f"Getting Chemical Measurements for Job ID: {job.id}")
+            logger.debug(f"Getting Chemical Measurements for Job ID: {job.id}")
             return self._get_chemical_measurements(wellbore_id=job.wellbore_id, job_id=job.id)
         if all(v is not None for v in [wellbore_id, job_id]):
-            logging.debug(f"Getting Chemical Measurements for Job ID: {job_id}")
+            logger.debug(f"Getting Chemical Measurements for Job ID: {job_id}")
             return self._get_chemical_measurements(wellbore_id=wellbore_id, job_id=job_id)  # type: ignore
 
         raise ValueError("Either job or wellbore_id and job_id must be provided.")
@@ -192,10 +192,10 @@ class Soe:
 
         """
         if task is not None:
-            logging.debug(f"Getting Activities for Task ID: {task.id}")
+            logger.debug(f"Getting Activities for Task ID: {task.id}")
             return self._get_activities(wellbore_id=task.wellbore_id, job_id=task.job_id, task_id=task.id)  # type: ignore
         if all(v is not None for v in [wellbore_id, job_id, task_id]):
-            logging.debug(f"Getting Activities for Task ID: {task_id}")
+            logger.debug(f"Getting Activities for Task ID: {task_id}")
             return self._get_activities(wellbore_id=wellbore_id, job_id=job_id, task_id=task_id)  # type: ignore
 
         raise ValueError("Provide either a `SoeTask` or a wellbore_id, job_id, and task_id combination.")
