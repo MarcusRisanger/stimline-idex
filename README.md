@@ -31,14 +31,14 @@ jwt_auth = JWTAuth(
 
 client_jwt = IDEXClient(auth=jwt_auth)
 ```
-
+ 
 The different modules are available for interaction, to get top 3 recently created wellbores:
 
 ```python
 wellbores = client.wellbores.get(top=3, order_by="createdDate desc")
 ```
 
-By default, some API endpoints return soft deleted records. However, the wrapper by default excludes deleted records in the query to the API. You can override this by using a kwarg: `include_soft_delete=True`. 
+By default, some API endpoints return soft deleted records. However, the wrapper by default excludes deleted records in the query to the API. This is because retrieving deleted data may lead to confusing outcomes (e.g. several wellbores with the same name). You can override this by using a kwarg: `include_soft_delete=True`. 
 
 ```python
 wellbores = client.wellbores.get(include_soft_delete=True)
@@ -101,3 +101,7 @@ For endpoints that support retrieval of a given object by id, pass this as a str
 wellbore_id = "abc"
 wellbore = client.wellbores.get(id=wellbore_id)
 ```
+
+## Logs
+
+This package emits logs on the `stimline-idex` logger.
