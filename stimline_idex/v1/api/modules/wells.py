@@ -80,6 +80,12 @@ class Wells:
         if order_by is not None:
             params["$orderby"] = order_by
 
+        if top is not None and include_soft_delete is False:
+            logger.warning(
+                "Top parameter is set, but include_soft_delete is False. "
+                + "This may result in too few records being retrieved."
+            )
+
         data = self._api.get(url="Wells", params=params)
 
         if data.status_code == 204:
