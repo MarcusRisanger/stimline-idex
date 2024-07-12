@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stimline-idex"
-version = "0.2.0"
+version = "0.3.0"
 description = "API Wrapper for the Stimline IDEX collaboration platform software used for well intervention."
 authors = ["Marcus Risanger <69350948+MarcusRisanger@users.noreply.github.com>"]
 readme = "README.md"
