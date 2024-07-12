@@ -53,7 +53,7 @@ for wellbore in wellbores:
     print(wellbore.name)
 ```
 
-Some of the endpoints allow for OData filtering. The filter string is passed as submitted to the function, it is up to the end user to ensure that this is in a correct format. The column names used in the filtering expression must be according to the API specification (i.e. not snake_cased). 
+Some of the endpoints allow for OData filtering. The filter string is passed as submitted to the function, it is up to the end user to ensure that this is in a correct format. The column names used in the filtering expression must be according to the API specification (i.e. not snake_cased). See the [official Odata documentation](https://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/part2-url-conventions/odata-v4.0-errata03-os-part2-url-conventions-complete.html#_Toc453752357) for filtering inspiration..
 
 > Note: Filtering on the `deletedDate` attribute *and* not having `include_soft_delete=True` will emit a warning log.
 
