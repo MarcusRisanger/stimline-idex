@@ -8,7 +8,7 @@ from urllib.parse import urljoin
 
 import requests
 
-from ...data_schemas.v1.auth import (
+from ...v1.data_schemas.auth import (
     AuthenticateRequest,
     AuthenticateResponse,
     RefreshTokenRequest,

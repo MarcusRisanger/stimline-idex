@@ -1,4 +1,4 @@
-from ....data_schemas.v1.change_log import ChangeLog
+from ....v1.data_schemas.change_log import ChangeLog
 from ..api import IDEXApi
 
 

@@ -1,16 +1,17 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas.v1.assets import Customer
+from ....v1.data_schemas.assets import Well
 from ..api import IDEXApi
 
 
-class Customers:
+class Wells:
     def __init__(self, api: IDEXApi) -> None:
         self._api = api
 
     @overload
-    def get(self, *, id: str) -> Customer: ...
+    def get(self, *, id: str) -> Well: ...
+
     @overload
     def get(
         self,
@@ -21,10 +22,11 @@ class Customers:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
-    ) -> list[Customer]: ...
+    ) -> list[Well]: ...
 
     def get(
         self,
+        *,
         id: Optional[str] = None,
         filter: Optional[str] = None,
         select: Optional[list[str]] = None,
@@ -32,14 +34,14 @@ class Customers:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
-    ) -> Union[Customer, list[Customer]]:
+    ) -> Union[Well, list[Well]]:
         """
-        Get `Customer` object(s).
+        Get `Well` object(s).
 
         Parameters
         ----------
         id : Optional[str]
-            Customer to retrieve.
+            Well to retrieve.
         filter : Optional[str]
             OData filter string.
         select : list[str] | None
@@ -55,14 +57,15 @@ class Customers:
 
         Returns
         -------
-        Union[Customer, list[Customer]]
-            The `Customer` object(s).
+        Union[Well, list[Well]]
+            The `Well` object(s).
 
         """
         if id is not None:
-            logging.debug(f"Getting Customer with ID: {id}")
-            data = self._api.get(url=f"Customers/{id}")
-            return Customer.model_validate(data.json())
+            # Get singular well
+            logging.debug(f"Getting Well with ID: {id}")
+            data = self._api.get(url=f"Wells/{id}")
+            return Well.model_validate(data.json())
 
         params: dict[str, Any] = {}
         if filter is not None:
@@ -77,17 +80,17 @@ class Customers:
         if order_by is not None:
             params["$orderby"] = order_by
 
-        data = self._api.get(url="Customers", params=params)
+        data = self._api.get(url="Wells", params=params)
 
         if data.status_code == 204:
             return []
 
-        customers = [Customer.model_validate(row) for row in data.json()]
+        wells = [Well.model_validate(row) for row in data.json()]
 
         if include_soft_delete:
-            return customers
+            return wells
 
-        return [customer for customer in customers if customer.deleted_date is None]
+        return [well for well in wells if well.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

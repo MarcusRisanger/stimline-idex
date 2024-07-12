@@ -1,4 +1,4 @@
-from ....data_schemas.v1.assets import Coil
+from ....v1.data_schemas.assets import Coil
 from ..api import IDEXApi
 
 

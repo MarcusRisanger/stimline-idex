@@ -1,7 +1,7 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas.v1.assets import Well, Wellbore
+from ....v1.data_schemas.assets import Well, Wellbore
 from ..api import IDEXApi
 
 

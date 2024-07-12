@@ -1,8 +1,8 @@
 import logging
 from typing import Optional, overload
 
-from ....data_schemas.v1.assets import Wellbore
-from ....data_schemas.v1.events import (
+from ....v1.data_schemas.assets import Wellbore
+from ....v1.data_schemas.events import (
     SoeActivity,
     SoeChemicalMeasurement,
     SoeJob,

@@ -45,7 +45,4 @@ class IDEXApi:
                 headers["Accept"] = "application/json"
         else:
             headers = {"Content-Type": "application/json", "Accept": "application/json"}
-
-        print(headers)
-        print(kwargs.get("data"))
         return self._send_request(method="POST", url=url, headers=headers, **kwargs)

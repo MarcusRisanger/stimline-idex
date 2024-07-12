@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Union, overload
 
-from ....data_schemas.v1.assets import Log, Unit
+from ....v1.data_schemas.assets import Log, Unit
 from ..api import IDEXApi
 from .text_utils import url_encode_id
 

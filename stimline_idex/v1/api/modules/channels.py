@@ -2,15 +2,15 @@ import logging
 from datetime import datetime
 from typing import Optional, overload
 
-from ....data_schemas.v1.assets import Log
-from ....data_schemas.v1.channel_data import (
+from ....v1.data_schemas.assets import Log
+from ....v1.data_schemas.channel_data import (
     Channel,
     ChannelDataRangeRequest,
     ChannelDataRequest,
     ChannelDataResponse,
     ChannelRange,
 )
-from ....data_schemas.v1.events import Run
+from ....v1.data_schemas.events import Run
 from ..api import IDEXApi
 from .text_utils import url_encode_id
 

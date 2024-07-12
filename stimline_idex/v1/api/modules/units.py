@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from ....data_schemas.v1.assets import Unit
+from ....v1.data_schemas.assets import Unit
 from ..api import IDEXApi
 
 

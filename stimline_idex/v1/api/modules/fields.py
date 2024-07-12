@@ -1,16 +1,16 @@
 import logging
 from typing import Any, Optional, Union, overload
 
-from ....data_schemas.v1.assets import Field as Installation
+from ....v1.data_schemas.assets import Field
 from ..api import IDEXApi
 
 
-class Installations:
+class Fields:
     def __init__(self, api: IDEXApi) -> None:
         self._api = api
 
     @overload
-    def get(self, *, id: str) -> Installation: ...
+    def get(self, *, id: str) -> Field: ...
     @overload
     def get(
         self,
@@ -21,7 +21,7 @@ class Installations:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
-    ) -> list[Installation]: ...
+    ) -> list[Field]: ...
 
     def get(
         self,
@@ -32,14 +32,14 @@ class Installations:
         skip: Optional[int] = None,
         order_by: Optional[str] = None,
         include_soft_delete: Optional[bool] = False,
-    ) -> Union[Installation, list[Installation]]:
+    ) -> Union[Field, list[Field]]:
         """
-        Get `Installation` object(s).
+        Get `Field` object(s).
 
         Parameters
         ----------
         id : Optional[str]
-            Installation to retrieve.
+            Field to retrieve.
         filter : Optional[str]
             OData filter string.
         select : list[str] | None
@@ -55,14 +55,14 @@ class Installations:
 
         Returns
         -------
-        Union[Installation, list[Installation]]
-            The `Installation` object(s).
+        Union[Field, list[Field]]
+            The `Field` object(s).
 
         """
         if id is not None:
-            logging.debug(f"Getting Installation with ID: {id}")
-            data = self._api.get(url=f"Installations/{id}")
-            return Installation.model_validate(data.json())
+            logging.debug(f"Getting Field with ID: {id}")
+            data = self._api.get(url=f"Fields/{id}")
+            return Field.model_validate(data.json())
 
         params: dict[str, Any] = {}
         if filter is not None:
@@ -77,17 +77,17 @@ class Installations:
         if order_by is not None:
             params["$orderby"] = order_by
 
-        data = self._api.get(url="Installations", params=params)
+        data = self._api.get(url="Fields", params=params)
 
         if data.status_code == 204:
             return []
 
-        installations = [Installation.model_validate(row) for row in data.json()]
+        fields = [Field.model_validate(row) for row in data.json()]
 
         if include_soft_delete:
-            return installations
+            return fields
 
-        return [inst for inst in installations if inst.deleted_date is None]
+        return [field for field in fields if field.deleted_date is None]
 
     def _check_select(self, select: list[str]) -> list[str]:
         important_fields = ["id"]

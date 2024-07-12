@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, overload
 
-from ....data_schemas.v1.assets import Wellbore, WellboreLiveStatus
+from ....v1.data_schemas.assets import Wellbore, WellboreLiveStatus
 from ..api import IDEXApi
 from .text_utils import url_encode_id
 
