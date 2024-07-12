@@ -12,7 +12,7 @@ from ....v1.data_schemas import (
     Run,
 )
 from ..api import IDEXApi
-from .text_utils import url_encode_id
+from .utils import url_encode_id
 
 
 class Channels:

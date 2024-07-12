@@ -3,7 +3,7 @@ from typing import Optional, Union, overload
 from ....logging import logger
 from ....v1.data_schemas import Log, Unit
 from ..api import IDEXApi
-from .text_utils import url_encode_id
+from .utils import url_encode_id
 
 
 class Logs:
