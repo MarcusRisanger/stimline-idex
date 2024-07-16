@@ -38,7 +38,6 @@ class Uoms:
         from_uom: str,
         to_uom: str,
         values: list[float],
-        include_source_values_in_response: bool = False,
     ) -> list[float]:
         """
         Convert scalar values from one unit of measure to another.
@@ -62,7 +61,6 @@ class Uoms:
             source_uom_id=from_uom,
             target_uom_id=to_uom,
             values=values,
-            include_source_values_in_response=include_source_values_in_response,
         )
         data = self._api.post(
             url="UnitOfMeasure/Convert",
