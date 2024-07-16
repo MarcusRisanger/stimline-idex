@@ -1,6 +1,5 @@
 """Some helpers for authentication purposes."""
 
-import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Optional, Protocol
@@ -8,6 +7,7 @@ from urllib.parse import urljoin
 
 import requests
 
+from ...logging import logger
 from ...v1.data_schemas.auth import (
     AuthenticateRequest,
     AuthenticateResponse,
@@ -54,7 +54,7 @@ class JwtAuth:
             data=self.auth_request_payload,
         )
         response.raise_for_status()
-        logging.info("Received new token.")
+        logger.debug("Received new token response.")
         return AuthenticateResponse.model_validate_json(response.text)
 
     def _refresh_token(self, base_url: str) -> RefreshTokenResponse:
@@ -65,7 +65,7 @@ class JwtAuth:
             data=self.refresh_request_payload,
         )
         response.raise_for_status()
-        logging.info("Refreshed token.")
+        logger.debug("Received refresh token response.")
         return RefreshTokenResponse.model_validate_json(response.text)
 
     def get_auth_header(self, **kwargs: Any) -> dict[str, str]:
@@ -75,12 +75,15 @@ class JwtAuth:
             raise ValueError("The `base_url` keyword must be provided.")
 
         if self.auth is None:
+            logger.info("No token found. Acquiring token.")
             self.auth = self._acquire_token(base_url=base_url)
 
         elif self.auth.refresh_token_expire <= datetime.now(tz=timezone.utc):
+            logger.info("Token refresh has expired. Acquiring new token.")
             self.auth = self._acquire_token(base_url=base_url)
 
         elif self.auth.token_expire <= datetime.now(tz=timezone.utc):
+            logger.info("Token has expired, refreshing token.")
             resp = self._refresh_token(base_url=base_url)
             self.auth.token = resp.token
             self.auth.token_expire = resp.token_expire
