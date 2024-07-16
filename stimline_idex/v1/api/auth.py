@@ -17,8 +17,6 @@ from ...v1.data_schemas.auth import (
 
 
 class IDEXAuth(Protocol):
-    # Add post-init for parsing base url
-
     @property
     def base_url(self) -> str: ...
 
