@@ -18,7 +18,7 @@ class Tests:
 
     def get_buildup_tests(self, kind: Literal["API", "QTS"]) -> list[BuildUpTest]:
         """
-        Get `BuildUpTest` object(s).
+        Get `BuildUpTest` objects.
 
         Returns
         -------
@@ -41,7 +41,7 @@ class Tests:
 
     def get_asv_leak_rate_tests(self) -> list[AsvLeakRateTest]:
         """
-        Get `AsvLeakRateTest` object(s).
+        Get `AsvLeakRateTest` objects.
 
         Returns
         -------
@@ -57,7 +57,7 @@ class Tests:
 
     def get_sssv_leak_rate_tests(self) -> list[SssvLeakRateTest]:
         """
-        Get `SssvLeakRateTest` object(s).
+        Get `SssvLeakRateTest` objects.
 
         Returns
         -------
@@ -73,7 +73,7 @@ class Tests:
 
     def get_inflow_tests(self, kind: Literal["30m", "Regular"]) -> list[InflowTest]:
         """
-        Get `InflowTest` object(s).
+        Get `InflowTest` objects.
 
         Parameters
         ----------
@@ -103,7 +103,7 @@ class Tests:
 
     def get_pressure_tests(self) -> list[PressureTest]:
         """
-        Get `PressureTest` object(s).
+        Get `PressureTest` objects.
 
         Returns
         -------
@@ -119,7 +119,7 @@ class Tests:
 
     def get_xmt_leak_rate_tests(self, kind: Literal["HMV", "LMV"]) -> list[LeakRateTest]:
         """
-        Get `PressureTest` object(s).
+        Get `PressureTest` objects.
 
         Returns
         -------

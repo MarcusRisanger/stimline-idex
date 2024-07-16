@@ -29,7 +29,7 @@ class WellboreHistories:
         include_soft_delete: Optional[bool] = False,
     ) -> list[WellboreHistory]:
         """
-        Get `WellboreHistory` object(s).
+        Get `WellboreHistory` objects.
 
         Parameters
         ----------
@@ -47,7 +47,7 @@ class WellboreHistories:
         Returns
         -------
         list[WellboreHistory]
-            The `WellboreHistory` object(s).
+            The `WellboreHistory` objects.
 
         """
         if unit is not None or unit_id is not None:

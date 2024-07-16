@@ -31,7 +31,7 @@ class UnitActiveWellbores:
         include_soft_delete: Optional[bool] = False,
     ) -> list[UnitActiveWellbore]:
         """
-        Get `UnitActiveWellbore` object(s).
+        Get `UnitActiveWellbore` objects.
 
         Parameters
         ----------
@@ -49,7 +49,7 @@ class UnitActiveWellbores:
         Returns
         -------
         list[UnitActiveWellbore]
-            The `UnitActiveWellbore` object(s).
+            The `UnitActiveWellbore` objects.
 
         """
         if unit is not None or unit_id is not None:
