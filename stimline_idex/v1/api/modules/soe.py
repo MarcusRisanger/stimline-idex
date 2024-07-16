@@ -92,12 +92,12 @@ class Soe:
         """
         Get `SoeTask` objects for a given SoE Job.
 
-        Use either a SoeJob object or provide the wellbore_id and job_id explicitly.
+        Use either a `SoeJob` object or provide the wellbore_id and job_id explicitly.
 
         Parameters
         ----------
         job : Optional[SoeJob]
-            The SoeJob object for which to retrieve all Tasks.
+            The `SoeJob` object for which to retrieve all Tasks.
         wellbore_id : Optional[str]
             The ID of the Wellbore for which to retrieve all Tasks.
         job_id : Optional[str]
@@ -135,7 +135,7 @@ class Soe:
         Parameters
         ----------
         job : Optional[SoeJob]
-            The SoeJob object for which to retrieve all Chemical Measurements.
+            The `SoeJob` object for which to retrieve all Chemical Measurements.
         wellbore_id : Optional[str]
             The ID of the Wellbore for which to retrieve all Chemical Measurements.
         job_id : Optional[str]
@@ -172,7 +172,7 @@ class Soe:
         """
         Get `SoeActivity` objects for a given SoE Job Task.
 
-        Use either a SoeTask object or provide the wellbore_id, job_id and task_id explicitly.
+        Use either a `SoeTask` object or provide the wellbore_id, job_id and task_id explicitly.
 
         Parameters
         ----------
