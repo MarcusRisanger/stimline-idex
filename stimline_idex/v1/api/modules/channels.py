@@ -271,7 +271,7 @@ class Channels:
         include_outside_pts: bool = True,
     ) -> bytes:
         """
-        Get `ChannelDataResponse` object(s).
+        Get compressed `ChannelDataResponse` objects as bytes.
 
         Response is compressed using Brotli compression and MessagePack.
 
@@ -291,8 +291,8 @@ class Channels:
 
         Returns
         -------
-        list[ChannelDataResponse]
-            The `ChannelDataResponse` object(s).
+        bytes
+            The compressed `ChannelDataResponse` objects.
 
         """
         payload = ChannelDataRangeRequest(
