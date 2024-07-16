@@ -28,7 +28,7 @@ from .modules import (
 
 
 class IDEXClient:
-    def __init__(self, *, auth: IDEXAuth, session: Optional[Session] = None) -> None:
+    def __init__(self, auth: IDEXAuth, session: Optional[Session] = None) -> None:
         if session is None:
             session = Session()
 

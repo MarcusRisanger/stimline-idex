@@ -25,7 +25,7 @@ class WellboreLiveStatuses:
         include_soft_delete: Optional[bool] = False,
     ) -> list[WellboreLiveStatus]:
         """
-        Get `WellboreLiveStatus` object(s).
+        Get `WellboreLiveStatus` objects.
 
         Parameters
         ----------
@@ -39,7 +39,7 @@ class WellboreLiveStatuses:
         Returns
         -------
         list[WellboreLiveStatus]
-            The `WellboreLiveStatus` object(s).
+            The `WellboreLiveStatus` objects.
 
         """
         if wellbore is not None or wellbore_id is not None:

@@ -1,5 +1,3 @@
-from typing import Any
-
 from ....v1.data_schemas import UnitType, Uom
 from ....v1.data_schemas.uoms import UomConversionRequest, UomConversionResponse
 from ..api import IDEXApi
@@ -39,9 +37,8 @@ class Uoms:
         self,
         from_uom: str,
         to_uom: str,
-        values: list[Any],
-        include_source_values_in_response: bool = False,
-    ) -> UomConversionResponse:
+        values: list[float],
+    ) -> list[float]:
         """
         Convert scalar values from one unit of measure to another.
 
@@ -51,7 +48,7 @@ class Uoms:
             The source unit of measure.
         to_uom : str
             The target unit of measure.
-        values : list[Any]
+        values : list[float]
             The values to convert.
 
         Returns
@@ -64,10 +61,9 @@ class Uoms:
             source_uom_id=from_uom,
             target_uom_id=to_uom,
             values=values,
-            include_source_values_in_response=include_source_values_in_response,
         )
         data = self._api.post(
             url="UnitOfMeasure/Convert",
             data=payload.model_dump_json(by_alias=True),
         )
-        return UomConversionResponse.model_validate_json(data.text)
+        return UomConversionResponse.model_validate_json(data.text).converted_values

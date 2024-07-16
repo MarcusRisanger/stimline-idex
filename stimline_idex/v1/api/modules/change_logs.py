@@ -27,6 +27,11 @@ class ChangeLogs:
         anchor_larger_than : int
             The anchor value for which returned `ChangeLog` objects should have a larger anchor value.
 
+        Returns
+        -------
+        list[ChangeLog]
+            The `ChangeLog` objects.
+
         """
         data = self._api.get(url=f"ChangeLog/Anchor/{anchor_larger_than}")
 
