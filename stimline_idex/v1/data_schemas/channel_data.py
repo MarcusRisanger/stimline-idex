@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -23,7 +23,7 @@ class TimeRange(IDEX):
 
 class DataPoint(IDEX):
     time: datetime
-    value: Any
+    value: Union[float, str]
 
 
 class ChannelDataResponse(IDEX):
