@@ -38,7 +38,7 @@ class Channels:
         include_soft_delete: Optional[bool] = False,
     ) -> list[Channel]:
         """
-        Get `Channel` object(s).
+        Get `Channel` objects.
 
         Parameters
         ----------
@@ -56,7 +56,7 @@ class Channels:
         Returns
         -------
         list[Channel]
-            The `Channel` object(s).
+            The `Channel` objects.
 
         """
         log_id_, run_id_ = None, None
@@ -108,7 +108,7 @@ class Channels:
         channel_ids: Optional[list[str]] = None,
     ) -> list[ChannelRange]:
         """
-        Get `ChannelRange` object(s).
+        Get `ChannelRange` objects.
 
         Parameters
         ----------
@@ -120,7 +120,7 @@ class Channels:
         Returns
         -------
         list[ChannelRange]
-            The `ChannelRange` object(s).
+            The `ChannelRange` objects.
 
         """
         if channels is not None:
@@ -174,7 +174,7 @@ class Channels:
         channel_ids: Optional[list[str]] = None,
     ) -> list[ChannelDataResponse]:
         """
-        Get `ChannelDataResponse` object(s).
+        Get `ChannelDataResponse` objects.
 
         Parameters
         ----------
@@ -197,7 +197,7 @@ class Channels:
         Returns
         -------
         list[ChannelDataResponse]
-            The `ChannelDataResponse` object(s).
+            The `ChannelDataResponse` objects.
 
         """
         payload = ChannelDataRequest(
@@ -225,7 +225,7 @@ class Channels:
         include_outside_pts: bool = True,
     ) -> bytes:
         """
-        Get `ChannelDataResponse` object(s).
+        Get `ChannelDataResponse` objects.
 
         Parameters
         ----------
@@ -242,7 +242,7 @@ class Channels:
         Returns
         -------
         list[ChannelDataResponse]
-            The `ChannelDataResponse` object(s).
+            The `ChannelDataResponse` objects.
 
         """
         payload = ChannelDataRangeRequest(
