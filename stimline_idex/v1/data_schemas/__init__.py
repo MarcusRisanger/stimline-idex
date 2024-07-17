@@ -23,6 +23,7 @@ from .channel_data import (
     ChannelDataRequest,
     ChannelDataResponse,
     ChannelRange,
+    FirstAndLastDataPoint,
 )
 from .events import (
     AsvLeakRateTest,
@@ -72,6 +73,7 @@ __all__ = [
     "ChannelDataRequest",
     "ChannelDataResponse",
     "ChannelRange",
+    "FirstAndLastDataPoint",
     # Change Log
     "ChangeLog",
     # Uoms

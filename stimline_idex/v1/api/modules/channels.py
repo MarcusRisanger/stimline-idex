@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, overload
+from typing import Optional, Union, overload
 
 from ....logging import logger
 from ....v1.data_schemas import (
@@ -8,6 +8,7 @@ from ....v1.data_schemas import (
     ChannelDataRequest,
     ChannelDataResponse,
     ChannelRange,
+    FirstAndLastDataPoint,
     Log,
     Run,
 )
@@ -20,95 +21,70 @@ class Channels:
         self._api = api
 
     @overload
-    def get(self, *, log: Log, include_soft_delete: Optional[bool] = False) -> list[Channel]: ...
+    def get(self, *, log: Union[Log, str], include_soft_delete: Optional[bool] = False) -> list[Channel]: ...
     @overload
-    def get(self, *, log_id: str, include_soft_delete: Optional[bool] = False) -> list[Channel]: ...
-    @overload
-    def get(self, *, run: Run, include_soft_delete: Optional[bool] = False) -> list[Channel]: ...
-    @overload
-    def get(self, *, run_id: str, include_soft_delete: Optional[bool] = False) -> list[Channel]: ...
+    def get(self, *, run: Union[Run, str], include_soft_delete: Optional[bool] = False) -> list[Channel]: ...
 
     def get(
         self,
         *,
-        log: Optional[Log] = None,
-        log_id: Optional[str] = None,
-        run: Optional[Run] = None,
-        run_id: Optional[str] = None,
+        log: Optional[Union[Log, str]] = None,
+        run: Optional[Union[Run, str]] = None,
         include_soft_delete: Optional[bool] = False,
     ) -> list[Channel]:
         """
-        Get `Channel` object(s).
+        Get `Channel` objects.
 
         Parameters
         ----------
-        log : Optional[Log]
-            Log object to get Channel for.
-        log_id : Optional[str]
-            Log ID to get Channel for.
-        run : Optional[Run]
-            Run object to get Channel for.
-        run_id : Optional[str]
-            Run ID to get Channel for.
+        log : Optional[Union[Log,str]]
+            Log object (or log ID) to get Channel for.
+        run : Optional[Union[Run,str]]
+            Run object (or run ID) to get Channel for.
         include_soft_delete : Optional[bool] = False
             Include soft deleted records.
 
         Returns
         -------
         list[Channel]
-            The `Channel` object(s).
+            The `Channel` objects.
 
         """
-        log_id_, run_id_ = None, None
+        log_id, run_id = None, None
 
-        if log is not None or log_id is not None:
-            log_id_ = log_id if log is None else log.id
-            assert log_id_ is not None
-            logger.debug(f"Getting Channels for Log with ID: {id}")
-            log_id_ = url_encode_id(log_id_)
-            data = self._api.get(url=f"Logs/{log_id_}/Channels")
-
-        elif run is not None or run_id is not None:
-            run_id_ = run_id if run is None else run.id
-            assert run_id_ is not None
-            logger.debug(f"Getting Channels for Run with ID: {id}")
-            run_id_ = url_encode_id(run_id_)
-            data = self._api.get(url=f"Runs/{run_id_}/Channels")
-
+        if log is not None:
+            log_id = log if isinstance(log, str) else log.id
+            logger.debug(f"Getting Channels for Log with ID: {log_id}")
+            log_id = url_encode_id(log_id)
+            data = self._api.get(url=f"Logs/{log_id}/Channels")
+        elif run is not None:
+            run_id = run if isinstance(run, str) else run.id
+            logger.debug(f"Getting Channels for Run with ID: {run_id}")
+            run_id = url_encode_id(run_id)
+            data = self._api.get(url=f"Runs/{run_id}/Channels")
         else:
-            raise TypeError("Either `log`, `log_id`, `run` or `run_id` must be provided.")
+            raise TypeError("Either `log` or `run` must be provided.")
 
         if data.status_code == 204:
             return []
 
         records = [Channel.model_validate(row) for row in data.json()]
-
-        if log_id_ is not None:
+        if log_id is not None:
             for record in records:
-                record.log_id = log_id_
+                record.log_id = log_id
 
-        if run_id_ is not None:
+        if run_id is not None:
             for record in records:
-                record.run_id = run_id_
+                record.run_id = run_id
 
         if include_soft_delete:
             return records
 
         return [rec for rec in records if rec.deleted_date is None]
 
-    @overload
-    def get_available_ranges(self, *, channels: list[Channel]) -> list[ChannelRange]: ...
-    @overload
-    def get_available_ranges(self, *, channel_ids: list[str]) -> list[ChannelRange]: ...
-
-    def get_available_ranges(
-        self,
-        *,
-        channels: Optional[list[Channel]] = None,
-        channel_ids: Optional[list[str]] = None,
-    ) -> list[ChannelRange]:
+    def get_ranges(self, channel_ids: list[str]) -> list[ChannelRange]:
         """
-        Get `ChannelRange` object(s).
+        Get `ChannelRange` objects for a list of known channel ids.
 
         Parameters
         ----------
@@ -120,92 +96,73 @@ class Channels:
         Returns
         -------
         list[ChannelRange]
-            The `ChannelRange` object(s).
+            The `ChannelRange` objects.
 
         """
-        if channels is not None:
-            ids = [channel.id for channel in channels]
-        elif channel_ids is not None:
-            ids = channel_ids
-        else:
-            raise TypeError("Either `channels` or `channel_ids` must be provided.")
-
-        logger.debug(f"Getting available ranges for Channels with IDs: {', '.join(ids)}.")
-
-        data = self._api.post(url="ChannelData/AvailableRanges", json=ids)
-
+        logger.debug(f"Getting available ranges for Channels with IDs: {', '.join(channel_ids)}.")
+        data = self._api.post(url="ChannelData/AvailableRanges", json=channel_ids)
         if data.status_code == 204:
             return []
 
         return [ChannelRange.model_validate(row) for row in data.json()]
 
-    @overload
-    def get_data_range(
-        self,
-        *,
-        channels: list[Channel],
-        start_time: datetime,
-        end_time: datetime,
-        limit: int,
-        ignore_unknown_ids: bool = True,
-        include_outside_pts: bool = True,
-    ) -> list[ChannelDataResponse]: ...
-    @overload
-    def get_data_range(
-        self,
-        *,
-        channel_ids: list[str],
-        start_time: datetime,
-        end_time: datetime,
-        limit: int,
-        ignore_unknown_ids: bool = True,
-        include_outside_pts: bool = True,
-    ) -> list[ChannelDataResponse]: ...
-
-    def get_data_range(
-        self,
-        *,
-        start_time: datetime,
-        end_time: datetime,
-        limit: int,
-        ignore_unknown_ids: bool = True,
-        include_outside_pts: bool = True,
-        channels: Optional[list[Channel]] = None,
-        channel_ids: Optional[list[str]] = None,
-    ) -> list[ChannelDataResponse]:
+    def get_first_and_last_datapoints(self, *, channels: list[Channel]) -> list[FirstAndLastDataPoint]:
         """
-        Get `ChannelDataResponse` object(s).
+        Get first and last datapoint for all supplied `Channel` objects.
 
         Parameters
         ----------
-        channels : Optional[list[Channel]]
+        channels: list[Channel]
+            The channels to get first and last datapoints for.
+
+        Returns
+        -------
+        dict[str, ]
+
+        """
+        channel_ids = [channel.id for channel in channels]
+        data = self._api.post(url="ChannelData/FirstAndLast", json=channel_ids)
+        if data.status_code == 204:
+            return []
+
+        return [FirstAndLastDataPoint.model_validate(row) for row in data.json()]
+
+    def get_datapoints_by_range(
+        self,
+        *,
+        channels: list[Channel],
+        start: datetime,
+        end: datetime,
+        limit: int,
+        include_outside_pts: bool = True,
+    ) -> list[ChannelDataResponse]:
+        """
+        Get datapoints for one time range, for all channels.
+
+        Parameters
+        ----------
+        channels : list[Channel]
             Channel objects to get Ranges for.
-        channel_ids : Optional[list[str]]
-            Channel IDs to get Ranges for.
-        start_time : datetime
+        start : datetime
             The start time for channel data.
-        end_time : datetime
+        end : datetime
             The end time for channel data.
         limit : int
-            The limit of datapoints to retrieve per channel.
-        ignore_unknown_ids : bool = True
-            Ignore unknown channel IDs.
+            The limit of datapoints to retrieve per channel. Must be between 1 and 10_000.
         include_outside_pts : bool = True
             Include outside points.
-
 
         Returns
         -------
         list[ChannelDataResponse]
-            The `ChannelDataResponse` object(s).
+            The `ChannelDataResponse` objects.
 
         """
         payload = ChannelDataRequest(
-            ids=[channel.id for channel in channels] if channels is not None else channel_ids,  # type: ignore
-            start=start_time,
-            end=end_time,
+            ids=[channel.id for channel in channels],
+            start=start,
+            end=end,
             limit=limit,
-            ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
         )
 
@@ -216,39 +173,34 @@ class Channels:
 
         return [ChannelDataResponse.model_validate(row) for row in data.json()]
 
-    def get_channel_datapoints(
+    def get_datapoints_for_channels(
         self,
         *,
-        channel_ranges: list[ChannelRange],
+        channels: list[Channel],
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
-    ) -> bytes:
+    ) -> list[ChannelDataResponse]:
         """
-        Get `ChannelDataResponse` object(s).
+        Get `ChannelDataResponse` objects.
 
         Parameters
         ----------
-        channels : list[ChannelRange]
-            Channel objects to get Ranges for.
+        channels : list[Channel]
+            `Channel` objects to get datapoints for.
         limit : int
-            The limit of datapoints to retrieve per channel.
-        ignore_unknown_ids : bool = True
-            Ignore unknown channel IDs.
+            The limit of datapoints to retrieve per channel. Must be between 1 and 10_000.
         include_outside_pts : bool = True
             Include outside points.
-
 
         Returns
         -------
         list[ChannelDataResponse]
-            The `ChannelDataResponse` object(s).
+            The `ChannelDataResponse` objects.
 
         """
         payload = ChannelDataRangeRequest(
-            channels=channel_ranges,
+            channels=[channel.data_range for channel in channels],
             limit=limit,
-            ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
         )
 
@@ -258,16 +210,15 @@ class Channels:
         )
 
         if data.status_code == 204:
-            return b""
+            return []
 
-        return data.content
+        return [ChannelDataResponse.model_validate(row) for row in data.json()]
 
-    def get_compressed_channel_datapoints(
+    def get_datapoints_for_channels_compressed(
         self,
         *,
-        channel_ranges: list[ChannelRange],
+        channels: list[Channel],
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
     ) -> bytes:
         """
@@ -279,36 +230,32 @@ class Channels:
 
         Parameters
         ----------
-        channels : list[ChannelRange]
-            Channel objects to get Ranges for.
+        channels : list[Channel]
+            `Channel` objects to get datapoints for.
         limit : int
-            The limit of datapoints to retrieve per channel.
-        ignore_unknown_ids : bool = True
-            Ignore unknown channel IDs.
+            The limit of datapoints to retrieve per channel. Must be between 1 and 10_000.
         include_outside_pts : bool = True
             Include outside points.
-
 
         Returns
         -------
         bytes
-            The compressed `ChannelDataResponse` objects.
+            The Brotli-compressed and MessagePacked `ChannelDataResponse` objects.
 
         """
         payload = ChannelDataRangeRequest(
-            channels=channel_ranges,
+            channels=[channel.data_range for channel in channels],
             limit=limit,
-            ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
         )
 
         data = self._api.post(
             url="ChannelData/GetCompressedChannelDataRange",
             data=payload.model_dump_json(by_alias=True),
-            headers={"Accept": "application/octet-stream"},
+            headers={
+                "Accept": "application/octet-stream",
+                "Accept-Encoding": "br, *",  # Specifying Brotli doesn't work.
+            },
         )
-
-        if data.status_code == 204:
-            return b""
 
         return data.content

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -23,24 +23,50 @@ class TimeRange(IDEX):
 
 class DataPoint(IDEX):
     time: datetime
-    value: Any
+    value: Union[float, str]
 
 
 class ChannelDataResponse(IDEX):
     id: str
-    points: Optional[list[DataPoint]]
+    points: list[DataPoint]
+
+    @property
+    def x(self) -> list[datetime]:
+        """Get x-axis values for channel data."""
+        return [point.time for point in self.points]
+
+    @property
+    def y(self) -> list[Union[float, str]]:
+        """Get y-axis values for channel data."""
+        return [point.value for point in self.points]
+
+
+class FirstAndLastDataPoint(ChannelDataResponse):
+    @property
+    def ordered_points(self) -> list[DataPoint]:
+        return sorted(self.points, key=lambda x: x.time)
+
+    @property
+    def first(self) -> DataPoint:
+        return self.ordered_points[0]
+
+    @property
+    def last(self) -> DataPoint:
+        return self.ordered_points[-1]
 
 
 class _DataRequest(IDEX):
     limit: int
-    ignore_unknown_ids: bool
     include_outside_points: bool
+    ignore_unknown_ids: bool = Field(default=True)
 
     @field_validator("limit")
     @classmethod
     def check_is_positive(cls, value: int):
         if int(value) <= 0:
-            raise ValueError("limit must be positive")
+            raise ValueError("`limit` must be positive.")
+        elif int(value) > 10_000:
+            raise ValueError("`limit` must be max 10_000.")
         return value
 
 
@@ -67,3 +93,11 @@ class Channel(IDEXAudit):
     range: TimeRange
     log_id: Optional[str] = Field(default=None)  # Added manually
     run_id: Optional[str] = Field(default=None)  # Added manually
+
+    @property
+    def data_range(self) -> ChannelRange:
+        return ChannelRange(
+            id=self.id,
+            start=self.range.start,
+            end=self.range.end,
+        )
