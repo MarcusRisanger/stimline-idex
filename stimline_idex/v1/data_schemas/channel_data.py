@@ -67,3 +67,11 @@ class Channel(IDEXAudit):
     range: TimeRange
     log_id: Optional[str] = Field(default=None)  # Added manually
     run_id: Optional[str] = Field(default=None)  # Added manually
+
+    @property
+    def data_range(self) -> ChannelRange:
+        return ChannelRange(
+            id=self.id,
+            start=self.range.start,
+            end=self.range.end,
+        )

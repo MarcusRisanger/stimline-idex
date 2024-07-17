@@ -96,17 +96,7 @@ class Channels:
 
         return [rec for rec in records if rec.deleted_date is None]
 
-    @overload
-    def get_available_ranges(self, *, channels: list[Channel]) -> list[ChannelRange]: ...
-    @overload
-    def get_available_ranges(self, *, channel_ids: list[str]) -> list[ChannelRange]: ...
-
-    def get_available_ranges(
-        self,
-        *,
-        channels: Optional[list[Channel]] = None,
-        channel_ids: Optional[list[str]] = None,
-    ) -> list[ChannelRange]:
+    def get_available_ranges(self, channel_ids: list[str]) -> list[ChannelRange]:
         """
         Get `ChannelRange` objects.
 
@@ -123,16 +113,9 @@ class Channels:
             The `ChannelRange` objects.
 
         """
-        if channels is not None:
-            ids = [channel.id for channel in channels]
-        elif channel_ids is not None:
-            ids = channel_ids
-        else:
-            raise TypeError("Either `channels` or `channel_ids` must be provided.")
+        logger.debug(f"Getting available ranges for Channels with IDs: {', '.join(channel_ids)}.")
 
-        logger.debug(f"Getting available ranges for Channels with IDs: {', '.join(ids)}.")
-
-        data = self._api.post(url="ChannelData/AvailableRanges", json=ids)
+        data = self._api.post(url="ChannelData/AvailableRanges", json=channel_ids)
 
         if data.status_code == 204:
             return []
