@@ -33,8 +33,8 @@ class ChannelDataResponse(IDEX):
 
 class _DataRequest(IDEX):
     limit: int
-    ignore_unknown_ids: bool
     include_outside_points: bool
+    ignore_unknown_ids: bool = Field(default=True)
 
     @field_validator("limit")
     @classmethod

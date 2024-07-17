@@ -130,7 +130,6 @@ class Channels:
         start_time: datetime,
         end_time: datetime,
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
     ) -> list[ChannelDataResponse]: ...
     @overload
@@ -141,7 +140,6 @@ class Channels:
         start_time: datetime,
         end_time: datetime,
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
     ) -> list[ChannelDataResponse]: ...
 
@@ -151,7 +149,6 @@ class Channels:
         start_time: datetime,
         end_time: datetime,
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
         channels: Optional[list[Channel]] = None,
         channel_ids: Optional[list[str]] = None,
@@ -171,8 +168,6 @@ class Channels:
             The end time for channel data.
         limit : int
             The limit of datapoints to retrieve per channel.
-        ignore_unknown_ids : bool = True
-            Ignore unknown channel IDs.
         include_outside_pts : bool = True
             Include outside points.
 
@@ -187,7 +182,6 @@ class Channels:
             start=start_time,
             end=end_time,
             limit=limit,
-            ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
         )
 
@@ -203,7 +197,6 @@ class Channels:
         *,
         channels: list[Channel],
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
     ) -> list[ChannelDataResponse]:
         """
@@ -215,8 +208,6 @@ class Channels:
             `Channel` objects to get datapoints for.
         limit : int
             The limit of datapoints to retrieve per channel.
-        ignore_unknown_ids : bool = True
-            Ignore unknown channel IDs.
         include_outside_pts : bool = True
             Include outside points.
 
@@ -229,7 +220,6 @@ class Channels:
         payload = ChannelDataRangeRequest(
             channels=[channel.data_range for channel in channels],
             limit=limit,
-            ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
         )
 
@@ -248,7 +238,6 @@ class Channels:
         *,
         channels: list[Channel],
         limit: int,
-        ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
     ) -> bytes:
         """
@@ -264,8 +253,6 @@ class Channels:
             `Channel` objects to get datapoints for.
         limit : int
             The limit of datapoints to retrieve per channel.
-        ignore_unknown_ids : bool = True
-            Ignore unknown channel IDs.
         include_outside_pts : bool = True
             Include outside points.
 
@@ -278,7 +265,6 @@ class Channels:
         payload = ChannelDataRangeRequest(
             channels=[channel.data_range for channel in channels],
             limit=limit,
-            ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
         )
 
