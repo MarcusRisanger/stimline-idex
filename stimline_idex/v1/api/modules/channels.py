@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import Optional, overload
 
+from requests import HTTPError
+
 from ....logging import logger
 from ....v1.data_schemas import (
     Channel,
@@ -268,11 +270,17 @@ class Channels:
             include_outside_points=include_outside_pts,
         )
 
-        data = self._api.post(
-            url="ChannelData/GetCompressedChannelDataRange",
-            data=payload.model_dump_json(by_alias=True),
-            headers={"Accept": "application/octet-stream"},
-        )
+        try:
+            data = self._api.post(
+                url="ChannelData/GetCompressedChannelDataRange",
+                data=payload.model_dump_json(by_alias=True),
+                headers={"Accept": "application/octet-stream"},
+            )
+        except HTTPError as e:
+            if e.response.status_code == 406:
+                logger.error("Received 406 error. This endpoint is currently not supported.")
+                return b""
+            raise e
 
         if data.status_code == 204:
             return b""
