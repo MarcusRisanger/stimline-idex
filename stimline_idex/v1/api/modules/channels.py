@@ -98,7 +98,7 @@ class Channels:
 
     def get_available_ranges(self, channel_ids: list[str]) -> list[ChannelRange]:
         """
-        Get `ChannelRange` objects.
+        Get `ChannelRange` objects for a list of known channel ids.
 
         Parameters
         ----------
@@ -157,7 +157,7 @@ class Channels:
         channel_ids: Optional[list[str]] = None,
     ) -> list[ChannelDataResponse]:
         """
-        Get `ChannelDataResponse` objects.
+        Get datapoints for a common time range for several channels.
 
         Parameters
         ----------
@@ -175,7 +175,6 @@ class Channels:
             Ignore unknown channel IDs.
         include_outside_pts : bool = True
             Include outside points.
-
 
         Returns
         -------
@@ -202,7 +201,7 @@ class Channels:
     def get_channel_datapoints(
         self,
         *,
-        channel_ranges: list[ChannelRange],
+        channels: list[Channel],
         limit: int,
         ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
@@ -212,15 +211,14 @@ class Channels:
 
         Parameters
         ----------
-        channels : list[ChannelRange]
-            Channel objects to get Ranges for.
+        channels : list[Channel]
+            `Channel` objects to get datapoints for.
         limit : int
             The limit of datapoints to retrieve per channel.
         ignore_unknown_ids : bool = True
             Ignore unknown channel IDs.
         include_outside_pts : bool = True
             Include outside points.
-
 
         Returns
         -------
@@ -229,7 +227,7 @@ class Channels:
 
         """
         payload = ChannelDataRangeRequest(
-            channels=channel_ranges,
+            channels=[channel.data_range for channel in channels],
             limit=limit,
             ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
@@ -248,7 +246,7 @@ class Channels:
     def get_compressed_channel_datapoints(
         self,
         *,
-        channel_ranges: list[ChannelRange],
+        channels: list[Channel],
         limit: int,
         ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
@@ -262,15 +260,14 @@ class Channels:
 
         Parameters
         ----------
-        channels : list[ChannelRange]
-            Channel objects to get Ranges for.
+        channels : list[Channel]
+            `Channel` objects to get datapoints for.
         limit : int
             The limit of datapoints to retrieve per channel.
         ignore_unknown_ids : bool = True
             Ignore unknown channel IDs.
         include_outside_pts : bool = True
             Include outside points.
-
 
         Returns
         -------
@@ -279,7 +276,7 @@ class Channels:
 
         """
         payload = ChannelDataRangeRequest(
-            channels=channel_ranges,
+            channels=[channel.data_range for channel in channels],
             limit=limit,
             ignore_unknown_ids=ignore_unknown_ids,
             include_outside_points=include_outside_pts,
