@@ -205,7 +205,7 @@ class Channels:
         limit: int,
         ignore_unknown_ids: bool = True,
         include_outside_pts: bool = True,
-    ) -> bytes:
+    ) -> list[ChannelDataResponse]:
         """
         Get `ChannelDataResponse` objects.
 
@@ -239,9 +239,9 @@ class Channels:
         )
 
         if data.status_code == 204:
-            return b""
+            return []
 
-        return data.content
+        return [ChannelDataResponse.model_validate(row) for row in data.json()]
 
     def get_compressed_channel_datapoints(
         self,
